@@ -5,6 +5,11 @@
 {% block content %}
     <div class="container">
         <h1 class="title">{{ album.name }}</h1>
+        <div class="content">
+            <p>
+                <a href="{{ url_for('edits.edit_album', album_id=album.id) }}">Cambiar nombre del album</a>
+            </p>
+        </div>
         <div class="columns is-multiline">
             {% for photo in photos %}
             <div class="column is-one-quarter">

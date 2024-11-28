@@ -37,7 +37,7 @@ class CreateAlbumForm(FlaskForm):
     """Formulario para crear un nuevo album."""
 
     albumname = StringField("Nombre del album", validators=[DataRequired()])
-    photos = FileField("Agregar Fotos", render_kw={"multiple": True})
+    #photos = FileField("Agregar Fotos", render_kw={"multiple": True})
     submit = SubmitField("Crear album")
 
 
