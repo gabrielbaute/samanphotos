@@ -45,7 +45,7 @@
             </table>
         </div>
         <div id="edit-section" style="display: none;">
-            <form method="POST" action="{{ url_for('main.edit_profile') }}">
+            <form method="POST" action="{{ url_for('edits.edit_profile') }}">
                 {{ form.hidden_tag() }}
                 <div class="field">
                     {{ form.first_name.label(class="label") }}

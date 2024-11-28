@@ -15,7 +15,7 @@
     <div class="container">
         <div class="columns is-centered">
             <div class="column is-one-third">
-                <form action="{{ url_for('main.register') }}" method="POST">
+                <form action="{{ url_for('auth.register') }}" method="POST">
                     {{ form.hidden_tag() }}
                     <div class="field">
                         <label class="label">Correo Electrónico</label>
@@ -52,7 +52,7 @@
                     ¿Ya tiene cuenta?
                 </p>
                 <br>
-                <a href="{{ url_for('main.login') }}">
+                <a href="{{ url_for('auth.login') }}">
                     <button class="button is-info is-fullwidth">Iniciar Sesión</button>
                 </a>
             </div>

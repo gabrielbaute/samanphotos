@@ -6,7 +6,7 @@
 <section class="section">
     <div class="container">
         <h1 class="title">Editar Álbum: {{ album.name }}</h1>
-        <form action="{{ url_for('main.edit_album', album_id=album.id) }}" method="POST">
+        <form action="{{ url_for('edits.edit_album', album_id=album.id) }}" method="POST">
             <div class="field">
                 <label class="label">Nuevo Nombre del Álbum</label>
                 <div class="control">

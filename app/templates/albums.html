@@ -22,11 +22,11 @@
                             </div>
                         </div>
                         <div class="content">
-                            <a href="{{ url_for('main.view_album', album_id=album.id) }}" class="button is-link is-fullwidth">Ver Álbum</a>
+                            <a href="{{ url_for('photos.view_album', album_id=album.id) }}" class="button is-link is-fullwidth">Ver Álbum</a>
                             <br>
-                            <a href="{{ url_for('main.edit_album', album_id=album.id) }}" class="button is-link is-small is-fullwidth">Editar</a>
+                            <a href="{{ url_for('edits.edit_album', album_id=album.id) }}" class="button is-link is-small is-fullwidth">Editar</a>
                         </div>
-                        <form action="{{ url_for('main.delete_album', album_id=album.id) }}" method="POST" style="margin-top: 10px;">
+                        <form action="{{ url_for('edits.delete_album', album_id=album.id) }}" method="POST" style="margin-top: 10px;">
                             <button class="button is-danger is-small is-fullwidth" type="submit">Eliminar</button>
                         </form>
                     </div>

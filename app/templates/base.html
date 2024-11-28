@@ -16,7 +16,7 @@
     <!-- Navbar section -->
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="{{ url_for('main.index') }}">
+            <a class="navbar-item" href="{{ url_for('public.index') }}">
                 <img src="{{ url_for('static', filename='images/logo-x24.png') }}" alt="Logo">
                 SamanPhotos
             </a>
@@ -27,12 +27,12 @@
                 <div class="navbar-item">
                     Hola, {{ current_user.first_name or current_user.username }}!
                 </div>
-                <a class="navbar-item" href="{{ url_for('main.edit_profile') }}">
+                <a class="navbar-item" href="{{ url_for('edits.edit_profile') }}">
                     <div class="button is-primary">
                         Preferencias de Perfil
                     </div>
                 </a>
-                <a class="navbar-item" href="{{ url_for('main.logout') }}">
+                <a class="navbar-item" href="{{ url_for('auth.logout') }}">
                     <div class="button is-warning">
                         Cerrar Sesión
                     </div>
@@ -66,7 +66,7 @@
                     </li>
                     <br>
                     <li>
-                        <a href="{{ url_for('main.profile') }}">
+                        <a href="{{ url_for('photos.profile') }}">
                             <div class="box">
                                 Subir fotos/crear album
                             </div>
@@ -80,7 +80,7 @@
                     </li>
                     <br>
                     <li>
-                        <a href="{{ url_for('main.view_albums') }}">
+                        <a href="{{ url_for('photos.view_albums') }}">
                             <div class="box">
                                 Albums
                             </div>
@@ -88,7 +88,7 @@
                     </li>
                     <br>
                     <li>
-                        <a href="{{ url_for('main.timeline_photos') }}">
+                        <a href="{{ url_for('photos.timeline_photos') }}">
                             <div class="box">
                                 Línea de Tiempo
                             </div>
@@ -96,7 +96,7 @@
                     </li>
                     <br>
                     <li>
-                        <a href="{{ url_for('main.geolocalization') }}">
+                        <a href="{{ url_for('photos.geolocalization') }}">
                             <div class="box">
                                 Geolocalización
                             </div>

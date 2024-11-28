@@ -30,8 +30,8 @@ def create_app():
         login_manager.login_view = 'main.login'
 
         # Registrar rutas personalizadas
-        from .routes import main as main_blueprint
-        app.register_blueprint(main_blueprint)
+        from app.routes import register_blueprints
+        register_blueprints(app)
 
         # Inicializar Flask-Security después de registrar rutas personalizadas
         user_datastore = SQLAlchemyUserDatastore(db, User, Role)

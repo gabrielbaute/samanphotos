@@ -10,7 +10,7 @@
         <div class="columns">
             <div class="column is-half">
                 <figure class="image">
-                    <img src="{{ url_for('main.uploaded_file', filename=photo.filename) }}" alt="{{ photo.original_filename }}">
+                    <img src="{{ url_for('photos.uploaded_file', filename=photo.filename) }}" alt="{{ photo.original_filename }}">
                 </figure>
             </div>
             <div class="column is-half">
@@ -29,12 +29,12 @@
                         </div>
                         <div class="field is-grouped">
                             <div class="control">
-                                <form action="{{ url_for('main.view_photo', photo_id=photo.id) }}" method="POST">
+                                <form action="{{ url_for('photos.view_photo', photo_id=photo.id) }}" method="POST">
                                     <button class="button is-danger is-small" type="submit">Eliminar</button>
                                 </form>
                             </div>
                             <div class="control">
-                                <a href="{{ url_for('main.download_photo', photo_id=photo.id) }}" class="button is-link is-small" download>Descargar</a>
+                                <a href="{{ url_for('photos.download_photo', photo_id=photo.id) }}" class="button is-link is-small" download>Descargar</a>
                             </div>
                         </div>
                     </div>
