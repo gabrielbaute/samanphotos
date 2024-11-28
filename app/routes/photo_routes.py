@@ -19,6 +19,9 @@ from werkzeug.utils import secure_filename
 from app.models import db, User, Photo, Album
 from app.forms import UploadPhotoForm, CreateAlbumForm
 from core.metadata import extract_metadata
+import logging
+
+logger = logging.getLogger(__name__)
 
 photos = Blueprint("photos", __name__)
 
@@ -41,73 +44,74 @@ def profile():
     """Ruta para subir fotos y crear albums en el perfil del usuario."""
     upload_form = UploadPhotoForm()
     album_form = CreateAlbumForm()
-    user_storage_path = current_user.storage_path
-    if upload_form.validate_on_submit() and "photos" in request.files:
-        files = request.files.getlist(upload_form.photos.name)
-        for file in files:
-            filename = secure_filename(file.filename)
-            original_filename = file.filename
-            unique_filename = f"{uuid.uuid4().hex}_{filename}"
-            filepath = os.path.join(user_storage_path, unique_filename)
-            file.save(filepath)
-            metadata = extract_metadata(filepath)
-            new_photo = Photo(
-                filename=unique_filename,
-                original_filename=original_filename,
-                path=filepath,
-                user_id=current_user.id,
-                date_taken=metadata.get("date_taken"),
-                camera_make=metadata.get("camera_make"),
-                camera_model=metadata.get("camera_model"),
-                focal_length=metadata.get("focal_length"),
-                aperture=metadata.get("aperture"),
-                iso=metadata.get("iso"),
-                gps_latitude=metadata.get("gps_latitude"),
-                gps_longitude=metadata.get("gps_longitude"),
-            )
-            db.session.add(new_photo)
-        db.session.commit()
-        flash("Fotos subidas con éxito")
-        return redirect(url_for("photos.profile"))
-    if album_form.validate_on_submit():
-        print(f"Creating new album: {album_form.albumname.data}")
-        new_album = Album(name=album_form.albumname.data, user_id=current_user.id)
-        db.session.add(new_album)
-        db.session.commit()  # Asegurar que el álbum se guarda en la DB y obtiene un id
+    albums = Album.query.filter_by(user_id=current_user.id).all()
+    # user_storage_path = current_user.storage_path
+    # if upload_form.validate_on_submit() and "photos" in request.files:
+    #     files = request.files.getlist(upload_form.photos.name)
+    #     for file in files:
+    #         filename = secure_filename(file.filename)
+    #         original_filename = file.filename
+    #         unique_filename = f"{uuid.uuid4().hex}_{filename}"
+    #         filepath = os.path.join(user_storage_path, unique_filename)
+    #         file.save(filepath)
+    #         metadata = extract_metadata(filepath)
+    #         new_photo = Photo(
+    #             filename=unique_filename,
+    #             original_filename=original_filename,
+    #             path=filepath,
+    #             user_id=current_user.id,
+    #             date_taken=metadata.get("date_taken"),
+    #             camera_make=metadata.get("camera_make"),
+    #             camera_model=metadata.get("camera_model"),
+    #             focal_length=metadata.get("focal_length"),
+    #             aperture=metadata.get("aperture"),
+    #             iso=metadata.get("iso"),
+    #             gps_latitude=metadata.get("gps_latitude"),
+    #             gps_longitude=metadata.get("gps_longitude"),
+    #         )
+    #         db.session.add(new_photo)
+    #     db.session.commit()
+    #     flash("Fotos subidas con éxito")
+    #     return redirect(url_for("photos.profile"))
+    # if album_form.validate_on_submit():
+    #     print(f"Creating new album: {album_form.albumname.data}")
+    #     new_album = Album(name=album_form.albumname.data, user_id=current_user.id)
+    #     db.session.add(new_album)
+    #     db.session.commit()  # Asegurar que el álbum se guarda en la DB y obtiene un id
 
-        if "photos" in request.files:
-            files = request.files.getlist(album_form.photos.name)
-            for file in files:
-                filename = secure_filename(file.filename)
-                original_filename = file.filename
-                unique_filename = f"{uuid.uuid4().hex}_{filename}"
-                filepath = os.path.join(user_storage_path, unique_filename)
-                file.save(filepath)
-                metadata = extract_metadata(filepath)
-                print(new_album.id)
-                new_photo = Photo(
-                    filename=unique_filename,
-                    original_filename=original_filename,
-                    path=filepath,
-                    user_id=current_user.id,
-                    album_id=new_album.id,  # Usar el id del álbum recién creado
-                    date_taken=metadata.get("date_taken"),
-                    camera_make=metadata.get("camera_make"),
-                    camera_model=metadata.get("camera_model"),
-                    focal_length=metadata.get("focal_length"),
-                    aperture=metadata.get("aperture"),
-                    iso=metadata.get("iso"),
-                    gps_latitude=metadata.get("gps_latitude"),
-                    gps_longitude=metadata.get("gps_longitude"),
-                )
-                db.session.add(new_photo)
-            db.session.commit()  # Asegurar que las fotos se guardan en la DB
-        else:
-            db.session.commit()  # Asegurar que el álbum se guarda incluso si no hay fotos
-        flash("Álbum creado con éxito!")
-        return redirect(url_for("photos.profile"))
+    #     if "photos" in request.files:
+    #         files = request.files.getlist(album_form.photos.name)
+    #         for file in files:
+    #             filename = secure_filename(file.filename)
+    #             original_filename = file.filename
+    #             unique_filename = f"{uuid.uuid4().hex}_{filename}"
+    #             filepath = os.path.join(user_storage_path, unique_filename)
+    #             file.save(filepath)
+    #             metadata = extract_metadata(filepath)
+    #             print(new_album.id)
+    #             new_photo = Photo(
+    #                 filename=unique_filename,
+    #                 original_filename=original_filename,
+    #                 path=filepath,
+    #                 user_id=current_user.id,
+    #                 album_id=new_album.id,  # Usar el id del álbum recién creado
+    #                 date_taken=metadata.get("date_taken"),
+    #                 camera_make=metadata.get("camera_make"),
+    #                 camera_model=metadata.get("camera_model"),
+    #                 focal_length=metadata.get("focal_length"),
+    #                 aperture=metadata.get("aperture"),
+    #                 iso=metadata.get("iso"),
+    #                 gps_latitude=metadata.get("gps_latitude"),
+    #                 gps_longitude=metadata.get("gps_longitude"),
+    #             )
+    #             db.session.add(new_photo)
+    #         db.session.commit()  # Asegurar que las fotos se guardan en la DB
+    #     else:
+    #         db.session.commit()  # Asegurar que el álbum se guarda incluso si no hay fotos
+    #     flash("Álbum creado con éxito!")
+    #     return redirect(url_for("photos.profile"))
     return render_template(
-        "profile.html", upload_form=upload_form, album_form=album_form
+        "profile.html", upload_form=upload_form, album_form=album_form, albums=albums
     )
 
 
@@ -124,6 +128,45 @@ def timeline_photos():
     return render_template(
         "timeline.html", photos=photos_db.items, pagination=photos_db
     )
+
+
+@photos.route("/photo/upload", methods=["POST"], endpoint="upload_photo")
+@login_required
+def upload_photo():
+    """Ruta para subir una foto."""
+    form = UploadPhotoForm()
+    if "photos" not in request.files:
+        flash("No se ha seleccionado ninguna foto.")
+        return redirect(url_for("photos.profile"))
+    logger.warning(f"Form data: {form.data}")
+    files = request.files.getlist(form.photos.name)
+    for file in files:
+        filename = secure_filename(file.filename)
+        original_filename = file.filename
+        unique_filename = f"{uuid.uuid4().hex}_{filename}"
+        filepath = os.path.join(current_user.storage_path, unique_filename)
+        file.save(filepath)
+        metadata = extract_metadata(filepath)
+        print(form.album.data)
+        new_photo = Photo(
+            filename=unique_filename,
+            original_filename=original_filename,
+            path=filepath,
+            user_id=current_user.id,
+            album_id=request.form.get("album"),
+            date_taken=metadata.get("date_taken"),
+            camera_make=metadata.get("camera_make"),
+            camera_model=metadata.get("camera_model"),
+            focal_length=metadata.get("focal_length"),
+            aperture=metadata.get("aperture"),
+            iso=metadata.get("iso"),
+            gps_latitude=metadata.get("gps_latitude"),
+            gps_longitude=metadata.get("gps_longitude"),
+        )
+        db.session.add(new_photo)
+    db.session.commit()
+    flash("Fotos subidas con éxito.")
+    return redirect(url_for("photos.profile"))
 
 
 @photos.route("/photo/<int:photo_id>", methods=["GET", "POST"])
@@ -209,3 +252,16 @@ def view_album(album_id):
     album = Album.query.get_or_404(album_id)
     photos_db = Photo.query.filter_by(album_id=album_id).all()
     return render_template("album.html", album=album, photos=photos_db)
+
+
+@photos.route("/album/create", methods=["POST"], endpoint="create_album")
+@login_required
+def create_album():
+    """Ruta para subir un album."""
+    form = CreateAlbumForm()
+    if form.validate_on_submit():
+        new_album = Album(name=form.albumname.data, user_id=current_user.id)
+        db.session.add(new_album)
+        db.session.commit()
+        flash("Álbum creado con éxito.")
+    return redirect(url_for("photos.profile"))
