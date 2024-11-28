@@ -8,13 +8,15 @@
         <div class="columns is-multiline">
             {% for photo in photos %}
             <div class="column is-one-quarter">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="{{url_for('photos.uploaded_file', filename=photo.filename) }}" alt="{{ photo.filename }}">
-                        </figure>
+                <a href="{{ url_for('photos.view_photo', photo_id=photo.id) }}" class="">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="{{url_for('photos.uploaded_file', filename=photo.filename) }}" alt="{{ photo.filename }}" style="object-fit: cover; width: 100%; height: 100%;">
+                            </figure>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             {% endfor %}
         </div>

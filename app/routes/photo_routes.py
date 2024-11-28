@@ -20,6 +20,7 @@ from app.models import db, User, Photo, Album
 from app.forms import UploadPhotoForm, CreateAlbumForm
 from core.metadata import extract_metadata
 import logging
+import random
 
 logger = logging.getLogger(__name__)
 
@@ -239,6 +240,10 @@ def download_photo(photo_id):
 def view_albums():
     """Ruta para visualizar los albums del usuario."""
     albums = Album.query.filter_by(user_id=current_user.id).all()
+    for album in albums:
+        photos = Photo.query.filter_by(album_id=album.id).all()
+        album.photos = photos
+        album.cover_photo = random.choice(photos).filename if photos else 'images/album-placeholder-x128.png'
     return render_template("albums.html", albums=albums)
 
 
