@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Álbumes{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="title">Mis Álbumes</h1>
+        <div class="columns is-multiline">
+            {% for album in albums %}
+            <div class="column is-one-quarter">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-128x128">
+                            <img class="is-rounded" src="{{ url_for('static', filename='images/album-placeholder-x128.png') }}" alt="Album Image">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-6">{{ album.name }}</p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <a href="{{ url_for('main.view_album', album_id=album.id) }}" class="button is-link is-fullwidth">Ver Álbum</a>
+                            <br>
+                            <a href="{{ url_for('main.edit_album', album_id=album.id) }}" class="button is-link is-small is-fullwidth">Editar</a>
+                        </div>
+                        <form action="{{ url_for('main.delete_album', album_id=album.id) }}" method="POST" style="margin-top: 10px;">
+                            <button class="button is-danger is-small is-fullwidth" type="submit">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

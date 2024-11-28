@@ -1,0 +1,26 @@
+# Entorno virtual
+venv/
+*.pyc
+__pycache__/
+instance/
+
+# Configuración de editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de configuración de sistema
+.DS_Store
+*.swp
+
+# Archivos de log
+*.log
+
+# SQLite database
+*.sqlite3
+
+# Archivos de configuración locales
+.env
+roadmap.md
+uploads/
