@@ -2,11 +2,17 @@
 import secrets
 
 def generate_secret_key():
-    """Genera una clave secreta para la aplicación Flask 32 caracteres."""
+    """Genera una clave secreta para la aplicación Flask 32 caracteres.
+    Returns:
+        str: Clave secreta
+    """
     return secrets.token_hex(32)
 
 def generate_salt():
-    """Genera una clave secreta para Flask-Security 16 caracteres."""
+    """Genera una clave secreta para Flask-Security 16 caracteres.
+    Returns:
+        str: Clave secreta
+    """
     return secrets.token_hex(16)
 
 if __name__ == "__main__":
