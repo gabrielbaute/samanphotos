@@ -1,3 +1,5 @@
+"""Configuración de la aplicación Flask."""
+
 import os
 from dotenv import load_dotenv
 
@@ -5,8 +7,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
+    """Configuración de la aplicación Flask."""
     SECRET_KEY = os.getenv('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI') or 'sqlite:///db.sqlite3'
     MAIL_SERVER = os.getenv('MAIL_SERVER')
     MAIL_PORT = os.getenv('MAIL_PORT')
     MAIL_USERNAME = os.getenv('MAIL_USERNAME')
@@ -19,7 +22,7 @@ class Config:
     ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
     ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
     UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'uploads')
-    
+
     # Configuraciones de Flask-Security
     SECURITY_REGISTERABLE = True
     SECURITY_CONFIRMABLE = True
