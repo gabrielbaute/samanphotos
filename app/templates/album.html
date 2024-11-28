@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-4by3">
-                            <img src="{{ url_for('static', filename=photo.path) }}" alt="{{ photo.filename }}">
+                            <img src="{{url_for('photos.uploaded_file', filename=photo.filename) }}" alt="{{ photo.filename }}">
                         </figure>
                     </div>
                 </div>
