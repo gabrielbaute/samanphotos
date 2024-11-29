@@ -3,7 +3,7 @@
 import os
 import uuid
 
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_security import Security, SQLAlchemyUserDatastore
@@ -11,7 +11,8 @@ from flask_admin import Admin
 from flask_migrate import Migrate
 from flask_restful import Api
 from flask_caching import Cache
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
+from datetime import datetime
 
 from app.extensions import db, mail, login_manager
 from app.models import User, Role
@@ -46,6 +47,16 @@ def create_app():
 
         db.create_all()
         create_admin_user()
+
+        @app.before_request
+        def update_last_login():
+            if current_user.is_authenticated:
+                current_user.last_login_at = current_user.current_login_at
+                current_user.last_login_ip = current_user.current_login_ip
+                current_user.current_login_at = datetime.utcnow()
+                current_user.current_login_ip = request.remote_addr
+                current_user.login_count += 1
+                db.session.commit()
 
     if not os.path.exists(app.config["UPLOAD_FOLDER"]):
         os.makedirs(app.config["UPLOAD_FOLDER"])
