@@ -37,6 +37,7 @@ class User(db.Model, UserMixin):
     storage_path = db.Column(db.String(255), nullable=False)  # Ruta de almacenamiento
     active = db.Column(db.Boolean, default=True)
     confirmed_at = db.Column(db.DateTime)
+    theme_preference = db.Column(db.String(10), default='light')
     fs_uniquifier = db.Column(
         db.String(64), unique=True, nullable=False, default=uuid.uuid4().hex
     )
