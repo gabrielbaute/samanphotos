@@ -46,6 +46,16 @@ document.addEventListener('DOMContentLoaded', function() {
             editSection.style.display = 'block';
         });
     }
+
+    // Selector de Tema
+    const themeSelector = document.querySelector('select[name="theme_preference"]');
+    if (themeSelector) {
+        themeSelector.addEventListener('change', function () {
+            const selectedTheme = this.value;
+            document.documentElement.setAttribute('data-theme', selectedTheme);
+            document.documentElement.className = 'theme-' + selectedTheme;
+        });
+    }
 });
 
 // Script para OpenStreetMap

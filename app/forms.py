@@ -65,4 +65,8 @@ class EditProfileForm(FlaskForm):
         "Repetir Nueva Contraseña",
         validators=[EqualTo("password", message="Las contraseñas deben coincidir")],
     )
+    theme_preference = SelectField(
+        "Tema",
+        choices=[("light", "Claro"), ("dark", "Oscuro")]
+    )
     submit = SubmitField("Actualizar Perfil")

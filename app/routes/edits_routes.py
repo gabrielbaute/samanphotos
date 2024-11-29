@@ -43,6 +43,7 @@ def edit_profile():
         current_user.last_name = form.last_name.data
         current_user.email = form.email.data
         current_user.age = form.age.data
+        current_user.theme_preference = form.theme_preference.data
         if form.password.data:
             current_user.set_password(form.password.data)
         db.session.commit()
@@ -53,6 +54,7 @@ def edit_profile():
     form.last_name.data = current_user.last_name
     form.email.data = current_user.email
     form.age.data = current_user.age
+    form.theme_preference.data = current_user.theme_preference
 
     # Preparar los datos de seguridad
     security_info = {

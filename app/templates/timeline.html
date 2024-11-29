@@ -21,9 +21,13 @@
                                     </figure>
                                 </div>
                                 <div class="card-content">
-                                <form action="{{ url_for('edits.delete_photo', photo_id=photo.id) }}" method="POST">
-                                    <button class="button is-info is-small is-fullwidth" type="submit">Eliminar</button>
-                                </form>
+                                    <div class="content">
+                                        <p>
+                                            <a href="{{ url_for('edits.delete_photo', photo_id=photo.id) }}">Eliminar</a>
+                                            |
+                                            {{ photo.date_taken }}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </a>
