@@ -125,7 +125,7 @@ def timeline_photos():
     page = request.args.get("page", 1, type=int)
     photos_db = (
         Photo.query.filter_by(user_id=current_user.id)
-        .order_by(Photo.uploaded_at.desc())
+        .order_by(Photo.date_taken.desc())
         .paginate(page=page, per_page=12)
     )
     return render_template(
