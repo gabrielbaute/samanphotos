@@ -7,7 +7,9 @@
         <h1 class="title">{{ album.name }}</h1>
         <div class="content">
             <p>
-                <a href="{{ url_for('edits.edit_album', album_id=album.id) }}">Cambiar nombre del album</a>
+                <a href="{{ url_for('edits.edit_album', album_id=album.id) }}">Cambiar nombre del Álbum</a>
+                |
+                <a href="{{ url_for('photos.download_album', album_id=album.id) }}">Descargar Álbum</a>
             </p>
         </div>
         <div class="columns is-multiline">

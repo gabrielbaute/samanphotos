@@ -2,6 +2,8 @@
 
 import os
 import uuid
+import zipfile
+import tempfile
 
 from flask import (
     Blueprint,
@@ -270,3 +272,33 @@ def create_album():
         db.session.commit()
         flash("Álbum creado con éxito.")
     return redirect(url_for("photos.profile"))
+
+@photos.route("/download_album/<int:album_id>")
+@login_required
+def download_album(album_id):
+    album = Album.query.get_or_404(album_id)
+    if album.user_id != current_user.id:
+        flash("No tienes permiso para descargar este álbum.")
+        return redirect(url_for("photos.albums"))
+    
+    photos = Photo.query.filter_by(album_id=album.id).all()
+
+    if not photos:
+        flash("El álbum no contiene fotos.")
+        return redirect(url_for("photos.view_album", album_id=album.id))
+    
+    user = User.query.get(current_user.id)
+    user_storage_path = user.storage_path
+    
+    temp_file = tempfile.NamedTemporaryFile(delete=False)
+    with zipfile.ZipFile(temp_file, "w") as zipf:
+        for photo in photos:
+            file_path = os.path.join(user_storage_path, photo.filename)
+            if os.path.exists(file_path):
+                zipf.write(file_path, os.path.basename(file_path))
+            else:
+                flash(f"Archivo no encontrado: {file_path}")
+    
+    temp_file.close()
+    
+    return send_file(temp_file.name, as_attachment=True, download_name=f'{album.name}.zip')
