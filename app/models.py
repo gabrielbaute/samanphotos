@@ -99,6 +99,10 @@ class FaceEncoding(db.Model):
     encoding = db.Column(db.PickleType, nullable=False)  # Almacenar la codificación facial como binario
     name = db.Column(db.String(255), nullable=True)  # Nombre asignado al rostro
     photo_id = db.Column(db.Integer, db.ForeignKey("photo.id"), nullable=False)
+    top = db.Column(db.Integer, nullable=True)
+    right = db.Column(db.Integer, nullable=True)
+    bottom = db.Column(db.Integer, nullable=True)
+    left = db.Column(db.Integer, nullable=True)
 
 class Album(db.Model):
     """Modelo de álbumes"""

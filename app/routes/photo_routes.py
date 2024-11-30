@@ -320,7 +320,7 @@ def people():
         name=face.name if face.name else f"Person {face.id}"
         if name not in people:
             people[name]=[]
-        people[name].append(Photo.query.get(face.photo_id))
+        people[name].append((Photo.query.get(face.photo_id), face))
     
     return render_template("people.html", people=people)
 
