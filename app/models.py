@@ -91,6 +91,13 @@ class Photo(db.Model):
 
     user = db.relationship("User", backref=db.backref("photos", lazy="dynamic"))
 
+class FaceEncoding(db.Model):
+    """Modelo de codificaciones faciales"""
+
+    id = db.Column(db.Integer, primary_key=True)
+    encoding = db.Column(db.PickleType, nullable=False)  # Almacenar la codificación facial como binario
+    name = db.Column(db.String(255), nullable=True)  # Nombre asignado al rostro
+    photo_id = db.Column(db.Integer, db.ForeignKey("photo.id"), nullable=False)
 
 class Album(db.Model):
     """Modelo de álbumes"""
