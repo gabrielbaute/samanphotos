@@ -18,7 +18,7 @@
                     <div class="block">
                         <div class="content">
                             <h2 class="subtitle">Detalles</h2>
-                            <p><strong>Fecha tomada:</strong> {{ photo.date_taken }}</p>
+                            <p><strong>Fecha tomada:</strong> <time datetime="{{ photo.date_taken }}">{{ photo.date_taken }}</time></p>
                             <p><strong>Marca de la cámara:</strong> {{ photo.camera_make }}</p>
                             <p><strong>Modelo de la cámara:</strong> {{ photo.camera_model }}</p>
                             <p><strong>Longitud focal:</strong> {{ photo.focal_length }}</p>

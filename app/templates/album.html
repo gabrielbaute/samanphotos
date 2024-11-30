@@ -27,7 +27,7 @@
                                 <p>
                                     <a href="{{ url_for('edits.delete_photo', photo_id=photo.id) }}">Eliminar</a>
                                     |
-                                    {{ photo.date_taken }}
+                                    <time datetime="{{ photo.date_taken }}">{{ photo.date_taken }}</time>
                                 </p>
                             </div>
                         </div>

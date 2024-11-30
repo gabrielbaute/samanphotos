@@ -304,7 +304,7 @@ def download_album(album_id):
     
     return send_file(temp_file.name, as_attachment=True, download_name=f'{album.name}.zip')
 
-# Rutas para face recognition
+# Ruta para face recognition
 @photos.route("/people", methods=["GET"])
 @login_required
 def people():
@@ -324,6 +324,20 @@ def people():
     
     return render_template("people.html", people=people)
 
+# Ruta para filtrar por rostros
+@photos.route("/people/<int:person_id>", methods=["GET"])
+@login_required
+def person_photos(person_id):
+    # Obtener todas las codificaciones faciales asociadas al ID del rostro
+    face_encodings=FaceEncoding.query.filter_by(id=person_id).all()
+
+    # Obtener las fotos asociadas a las codificaciones faciales
+    photo_ids=[face.photo_id for face in face_encodings]
+    photos=Photo.query.filter(Photo.id.in_(photo_ids)).all()
+
+    return render_template("person_photos.html", photos=photos, person_id=person_id)
+
+# Ruta para escaneo masivo
 @photos.route("/scan_faces", methods=["POST"])
 @login_required
 def scan_faces():
