@@ -49,12 +49,13 @@ El proyecto aún tiene algunos problemas, como lo que respecta al manejo de albu
    | `MAIL_USE_SSL` | Usar SSL (True/False) |
    | `MAIL_DEFAULT_SENDER` | Remitente predeterminado del correo |
    | `SECURITY_PASSWORD_SALT` | Sal para la seguridad de las contraseñas |
+   | `JWT_SECRET_KEY` | Clave secreta para JWT |
    | `ADMIN_EMAIL` | Correo electrónico del administrador |
    | `ADMIN_PASSWORD` | Contraseña del administrador |
    | `UPLOAD_FOLDER` | Carpeta para las subidas de fotos |
 
 5. Generar claves secretas:
-   Utiliza el script `generate_keys.py` para generar los valores de `SECRET_KEY` y `SECURITY_PASSWORD_SALT`.
+   Utiliza el script `generate_keys.py` para generar los valores de `SECRET_KEY`, `JWT_SECRET_KEY` y `SECURITY_PASSWORD_SALT`.
    ```bash
    python generate_keys.py
    ```
