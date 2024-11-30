@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}People{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">People</h1>
+        <form action="{{ url_for('photos.scan_faces') }}" method="post">
+            <button type="submit" class="button is-link">Encontrar personas</button>
+        </form>
+
+        <div class="columns is-multiline">
+            {% for name, photos in people.items() %}
+            <div class="column is-one-quarter">
+                <h2 class="subtitle">{{ name }}</h2>
+                <div class="image-grid">
+                    {% for photo in photos %}
+                    <figure class="image is-128x128">
+                        <img src="{{ url_for('photos.uploaded_file', filename=photo.filename) }}" alt="{{ name }}">
+                    </figure>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
