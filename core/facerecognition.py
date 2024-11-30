@@ -7,9 +7,9 @@ def process_photo(photo):
     face_location=face_recognition.face_locations(image)
     face_encodings=face_recognition.face_encodings(image, face_location)
 
-    for enconding in face_encodings:
+    for encoding in face_encodings:
         face_encoding=FaceEncoding(
-            enconding=enconding,
+            encoding=encoding,
             photo_id=photo.id
         )
         db.session.add(face_encoding)

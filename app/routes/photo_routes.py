@@ -18,9 +18,10 @@ from flask import (
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
-from app.models import db, User, Photo, Album
+from app.models import db, User, Photo, Album, FaceEncoding
 from app.forms import UploadPhotoForm, CreateAlbumForm
 from core.metadata import extract_metadata
+from core.facerecognition import process_photo
 import logging
 import random
 
@@ -302,3 +303,32 @@ def download_album(album_id):
     temp_file.close()
     
     return send_file(temp_file.name, as_attachment=True, download_name=f'{album.name}.zip')
+
+# Rutas para face recognition
+@photos.route("/people", methods=["GET"])
+@login_required
+def people():
+    # Obtener todos los rostros del usuario actual
+    user_photo_ids=[photo.id for photo in Photo.query.filter_by(user_id=current_user.id).all()]
+
+    # Obtener todas las codificaciones faciales asociadas a las fotos del usuario
+    face_encodings= FaceEncoding.query.filter(FaceEncoding.photo_id.in_(user_photo_ids)).all()
+
+    # Agrupar rostros por nombre (o id si no tiene nombre)
+    people={}
+    for face in face_encodings:
+        name=face.name if face.name else f"Person {face.id}"
+        if name not in people:
+            people[name]=[]
+        people[name].append(Photo.query.get(face.photo_id))
+    
+    return render_template("people.html", people=people)
+
+@photos.route("/scan_faces", methods=["POST"])
+@login_required
+def scan_faces():
+    user_photos=Photo.query.filter_by(user_id=current_user.id).all()
+    for photo in user_photos:
+        process_photo(photo)
+    flash("Face scan completed successfully!", "success")
+    return redirect(url_for("photos.people"))

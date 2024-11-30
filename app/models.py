@@ -78,6 +78,7 @@ class Photo(db.Model):
     uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     album_id = db.Column(db.Integer, db.ForeignKey("album.id"))
+    face_encodings = db.relationship("FaceEncoding", backref="photo", lazy="dynamic")
 
     # Campos de metadata
     date_taken = db.Column(db.DateTime, nullable=True)
