@@ -12,14 +12,17 @@ from flask_migrate import Migrate
 from flask_restful import Api
 from flask_caching import Cache
 from flask_login import LoginManager, current_user
+from flask_jwt_extended import JWTManager
 from datetime import datetime
 
 from app.extensions import db, mail, login_manager
 from app.models import User, Role
 from app.routes import register_blueprints
 from core.storage import create_user_storage
+from core.samanapi import api_bp
 
-cache = Cache()
+cache=Cache()
+jwt=JWTManager()
 
 
 def create_app():
@@ -34,6 +37,7 @@ def create_app():
         admin = Admin(app)
         cache.init_app(app)
         login_manager.init_app(app)
+        jwt.init_app(app)
 
         login_manager.login_view = "main.login"
 
@@ -61,6 +65,8 @@ def create_app():
     if not os.path.exists(app.config["UPLOAD_FOLDER"]):
         os.makedirs(app.config["UPLOAD_FOLDER"])
 
+    app.register_blueprint(api_bp, url_prefix='/api')
+    
     return app
 
 
