@@ -11,6 +11,13 @@
 - **✏️Edición de Perfil**: Actualizar información del perfil como nombre, correo, contraseña, etc.
 - **🔍Información de Seguridad**: Visualización de datos de inicio de sesión como la última IP, fecha de último inicio de sesión, etc.
 
+## En desarrollo 🚧
+
+- **🔌API**: 🚧 En desarrollo, de momento cumple con las funciones básicas CRUD, pero no se ha probado.
+- **👷Face Recognition**: 🚧 En desarrollo, se están usando las librerías dlib y face-recognition, pero aún hay mucho que aprender sobre cómo usar esta biblioteca, si tienen alguna idea o alternativas, es bienvenida! (estoy desarrollando esto en un entorno Windows).
+- **📅Recuerdos**: 🚧 Apenas estamos comenzando.
+- **📫Confirmación de cuenta mediante token**: 🚧 Apenas comenzando.
+
 ## Problemas a corregir
 
 El proyecto aún tiene algunos problemas, como lo que respecta al manejo de albumes, en los que aún falta mucho por desarrollar, y hay algunos bugs presente (no he logrado crear correctamente los albumes cuando se suben fotos al mismo tiempo en el formulario). 
@@ -67,7 +74,6 @@ El proyecto aún tiene algunos problemas, como lo que respecta al manejo de albu
 
 ## Futuras Mejoras 🚀
 
-- **🔌API**: Implementación de una API para la gestión de fotos y álbumes. En un futuro, quisiera crear un cliente en Flet para interactuar con el servidor desde una app Android.
 - **💄Mejora de la UI**: Refinar la interfaz de usuario para una mejor experiencia. El objetivo es que se asemeje un poco a Google Photos, si bien Bulma (el framework css que estoy usando) quizás no sea lo más apropiado para esto. Con el tiempo, en la medida en que se pula la parte estética y se agreguen más funciones, decidiré si mantengo la estética minimalista de Bulma o si logro implementar un diseño más semejante a Google.
 - **☁️Soporte para Otros Proveedores de Almacenamiento**: Añadir soporte para almacenamiento en la nube como AWS S3.
 - **🔔Notificaciones**: Implementar notificaciones por correo electrónico para eventos importantes, recuerdos, etc.
