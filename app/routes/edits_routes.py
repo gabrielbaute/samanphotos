@@ -1,5 +1,7 @@
 """Rutas para editar y eliminar fotos, álbumes y perfil de usuario."""
 
+import os
+
 from flask import Blueprint, redirect, render_template, url_for, flash, request
 from flask_login import login_required, current_user
 
@@ -79,13 +81,22 @@ def delete_photo(photo_id):
     if photo.user_id != current_user.id:
         flash("No tienes permiso para realizar esta acción.")
         return redirect(url_for("photos.timeline_photos"))
-    try:
-        db.session.delete(photo)
-        db.session.commit()
-        flash("Foto eliminada con éxito.")
-    except Exception as e:
-        db.session.rollback()
-        flash("Ocurrió un error al eliminar la foto.")
+    
+    if photo:
+        try:
+            os.remove(photo.path)
+        except FileNotFoundError:
+            print(f"Archivo no encontrado al intentar borrar: {photo.path}")
+            flash("Error en el directorio del usuario, notificar al admin", "error")
+        try:
+            db.session.delete(photo)
+            db.session.commit()
+            flash("Foto eliminada con éxito.")
+        except Exception as e:
+            db.session.rollback()
+            flash("Ocurrió un error al eliminar la foto.")
+    else:
+        flash("Foto no encontrada", "error")
     return redirect(url_for("photos.timeline_photos"))
 
 

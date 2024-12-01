@@ -21,7 +21,7 @@ from werkzeug.utils import secure_filename
 from app.models import db, User, Photo, Album, FaceEncoding
 from app.forms import UploadPhotoForm, CreateAlbumForm
 from core.metadata import extract_metadata
-from core.facerecognition import process_photo
+from core.facerecognition import process_photo, comparefaces
 import logging
 import random
 
@@ -151,7 +151,7 @@ def upload_photo():
         filepath = os.path.join(current_user.storage_path, unique_filename)
         file.save(filepath)
         metadata = extract_metadata(filepath)
-        print(form.album.data)
+        #print(form.album.data)
         new_photo = Photo(
             filename=unique_filename,
             original_filename=original_filename,
@@ -325,17 +325,30 @@ def people():
     return render_template("people.html", people=people)
 
 # Ruta para filtrar por rostros
-@photos.route("/people/<int:person_id>", methods=["GET"])
+
+@photos.route('/people/<int:person_id>', methods=['GET'])
 @login_required
 def person_photos(person_id):
-    # Obtener todas las codificaciones faciales asociadas al ID del rostro
-    face_encodings=FaceEncoding.query.filter_by(id=person_id).all()
+    # Obtener la codificación facial específica
+    target_face = FaceEncoding.query.get(person_id)
+    print(f"Rostro objetivo: {target_face}")
 
-    # Obtener las fotos asociadas a las codificaciones faciales
-    photo_ids=[face.photo_id for face in face_encodings]
-    photos=Photo.query.filter(Photo.id.in_(photo_ids)).all()
+    if not target_face:
+        flash("Rostro no encontrado", "error")
+        return redirect(url_for('photos.people'))
 
-    return render_template("person_photos.html", photos=photos, person_id=person_id)
+    # Utilizar el método comparefaces para encontrar todas las coincidencias
+    matches = comparefaces(target_face.encoding)
+    print(f"Coincidencias encontradas: {matches}")
+
+    # Obtener las fotos asociadas a las codificaciones faciales coincidentes
+    photo_ids = [face.photo_id for face in matches]
+    print(f"IDs de fotos encontradas: {photo_ids}")
+    photos = Photo.query.filter(Photo.id.in_(photo_ids)).all()
+    print(f"Fotos encontradas: {photos}")
+
+    return render_template('person_photos.html', photos=photos, person_id=person_id)
+
 
 # Ruta para escaneo masivo
 @photos.route("/scan_faces", methods=["POST"])

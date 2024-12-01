@@ -6,6 +6,9 @@ from datetime import datetime
 from flask_security import UserMixin, RoleMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from sqlalchemy.types import PickleType
+from sqlalchemy.ext.mutable import MutableList
+
 from app.extensions import db
 
 roles_users = db.Table(
@@ -96,7 +99,7 @@ class FaceEncoding(db.Model):
     """Modelo de codificaciones faciales"""
 
     id = db.Column(db.Integer, primary_key=True)
-    encoding = db.Column(db.PickleType, nullable=False)  # Almacenar la codificación facial como binario
+    encoding = db.Column(MutableList.as_mutable(PickleType), nullable=False)  # Almacenar la codificación facial como binario
     name = db.Column(db.String(255), nullable=True)  # Nombre asignado al rostro
     photo_id = db.Column(db.Integer, db.ForeignKey("photo.id"), nullable=False)
     top = db.Column(db.Integer, nullable=True)

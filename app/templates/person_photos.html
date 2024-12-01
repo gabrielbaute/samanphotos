@@ -10,9 +10,11 @@
             {% for photo in photos %}
             <div class="column is-one-quarter">
                 <div class="card">
-                    <figure class="image is-4by3">
-                        <img src="{{url_for('photos.uploaded_file', filename=photo.filename) }}" alt="Photo of Person {{ person_id }}" style="object-fit: cover; width: 100%; height: 100%;">
-                    </figure>
+                    <a href="{{ url_for('photos.view_photo', photo_id=photo.id) }}">
+                        <figure class="image is-4by3">
+                            <img src="{{url_for('photos.uploaded_file', filename=photo.filename) }}" alt="Photo of Person {{ person_id }}" style="object-fit: cover; width: 100%; height: 100%;">
+                        </figure>
+                    </a>
                     <div class="card-content">
                         <div class="content">
                             {{ photo.original_filename }}
