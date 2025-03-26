@@ -1,0 +1,62 @@
+{% extends "base_public.html" %}
+
+{% block title %}Registrarse{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div class="container">
+        <h1 class="title">
+            Registrarse
+        </h1>
+        <p class="subtitle is-4">Llene el siguiente formulario y cree su cuenta</p>
+    </div>
+</div>
+<section class="section is-fullheight">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-one-third">
+                <form action="{{ url_for('auth.register') }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="field">
+                        <label class="label">Correo Electrónico</label>
+                        <div class="control">
+                            {{ form.email(class="input") }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Nombre</label>
+                        <div class="control">
+                            {{ form.username(class="input") }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Contraseña</label>
+                        <div class="control">
+                            {{ form.password(class="input") }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Confirmar Contraseña</label>
+                        <div class="control">
+                            {{ form.confirm_password(class="input") }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            {{ form.submit(class="button is-primary is-fullwidth") }}
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <p>
+                    ¿Ya tiene cuenta?
+                </p>
+                <br>
+                <a href="{{ url_for('auth.login') }}">
+                    <button class="button is-info is-fullwidth">Iniciar Sesión</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

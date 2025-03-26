@@ -17,6 +17,8 @@ class Config:
     # Flask configuration
     APP_NAME=os.getenv("APP_NAME")
     PORT=os.getenv("PORT")
+    APP_VERSION="0.1.0"
+    APP_LANGUAGE="es"
     SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI') or 'sqlite:///db.sqlite3'
     UPLOAD_FOLDER=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'uploads')
 
