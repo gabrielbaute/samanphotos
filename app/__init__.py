@@ -2,7 +2,7 @@
 
 import os
 
-from flask import Flask
+from flask import Flask, current_app
 from flask_migrate import Migrate
 from flask_restful import Api
 from flask_login import current_user
@@ -12,11 +12,8 @@ from database.models import User
 from database.db_config import db, init_db
 from app.routes import register_blueprints
 from core.samanapi import api_bp
-from utils import create_admin_user
+from utils import create_admin_user, setup_logging
 from config import Config
-
-
-
 
 def create_app():
     """Crea una instancia de la aplicación Flask"""
@@ -29,12 +26,23 @@ def create_app():
 
     # Initialize components
     init_db(app)
+    setup_logging(app)
     mail.init_app(app)
     migrate = Migrate(app, db)
     login_manager.init_app(app)
     login_manager.login_view = "main.login"
     cache.init_app(app)
     jwt.init_app(app)
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        """Cargar un usuario por ID
+        Args:
+            user_id (int): ID del usuario
+        Returns:
+            User: Objeto de usuario
+        """
+        return User.query.get(int(user_id))
 
     # Blueprints register
     register_blueprints(app)
@@ -43,6 +51,7 @@ def create_app():
     with app.app_context():
         db.create_all()
         create_admin_user()
+        app.logger.info(f"Server listening on port: {Config.PORT}")
 
     if not os.path.exists(app.config["UPLOAD_FOLDER"]):
         os.makedirs(app.config["UPLOAD_FOLDER"])
