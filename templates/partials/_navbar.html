@@ -1,26 +1,38 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="{{ url_for('public.index') }}">
-            <img src="{{ url_for('static', filename='images/logo-x24.png') }}" alt="Logo">
-            SamanPhotos
-        </a>
-    </div>
-
-    <div class="navbar-menu">
-        <div class="navbar-end">
-            <div class="navbar-item">
-                Hola, {{ current_user.first_name or current_user.username }}!
-            </div>
-            <a class="navbar-item" href="{{ url_for('edits.edit_profile') }}">
-                <div class="button is-primary">
-                    Preferencias de Perfil
-                </div>
-            </a>
-            <a class="navbar-item" href="{{ url_for('auth.logout') }}">
-                <div class="button is-warning">
-                    Cerrar Sesión
-                </div>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ url_for('public.index') }}">
+                <img src="{{ url_for('static', filename='images/logo-x24.png') }}" alt="Logo">
+                {{app_name}}
             </a>
         </div>
-    </div>
-</nav>
+
+        <div class="navbar-menu">
+            <div class="navbar-end">
+                {% if current_user.is_authenticated %}
+                <div class="navbar-item">
+                    Hola, {{ current_user.first_name or current_user.username }}!
+                </div>
+                <!-- Botón de cambio de tema -->
+                <div class="navbar-item">
+                    <button id="theme-toggle" class="button is-light">
+                        <!-- El ícono será manejado por el script -->
+                    </button>
+                </div>
+                <a class="navbar-item" href="{{ url_for('edits.edit_profile') }}">
+                    <div class="button is-primary">
+                        Preferencias de Perfil
+                    </div>
+                </a>
+                <a class="navbar-item" href="{{ url_for('auth.logout') }}">
+                    <div class="button is-warning">
+                        Cerrar Sesión
+                    </div>
+                </a>
+                {% else %}
+                <a class="button is-primary" href="{{ url_for('auth.login') }}">
+                    Log in
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>

@@ -49,6 +49,22 @@ document.addEventListener('DOMContentLoaded', function() {
             : '<i class="fa-solid fa-moon"></i>';
     };
 
+    // Actualizar ícono según el tema inicial
+    updateIcon();
+
+    // Manejar el clic en el botón para cambiar el tema
+    themeToggle.addEventListener("click", () => {
+        const activeTheme = htmlElement.getAttribute("data-theme");
+        const newTheme = activeTheme === "light" ? "dark" : "light";
+
+        // Cambiar el tema en el atributo y guardar en localStorage
+        htmlElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+
+        // Actualizar el ícono dinámicamente
+        updateIcon();
+    });
+
     // Manejo de pestañas en la página de editar perfil
     const tabSecurity = document.getElementById('tab-security');
     const tabEdit = document.getElementById('tab-edit');

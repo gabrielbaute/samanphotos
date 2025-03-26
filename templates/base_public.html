@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}SamanPhotos{% endblock %}</title>
+    <title>{% block title %}{{ app_name }}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css') }}">
     
 </head>
@@ -14,7 +14,7 @@
 
     <footer class="footer">
         <div class="content has-text-centered">
-            <p>&copy; 2024 SamanPhotos. Todos los derechos reservados.</p>
+            <p>&copy; 2024 {{ app_name }}. Todos los derechos reservados.</p>
         </div>
     </footer>
 
