@@ -26,8 +26,6 @@ from core.facerecognition import process_photo, comparefaces
 import logging
 import random
 
-logger = logging.getLogger(__name__)
-
 photos = Blueprint("photos", __name__)
 
 
@@ -143,7 +141,7 @@ def upload_photo():
     if "photos" not in request.files:
         flash("No se ha seleccionado ninguna foto.")
         return redirect(url_for("photos.profile"))
-    logger.warning(f"Form data: {form.data}")
+    #logger.warning(f"Form data: {form.data}")
     files = request.files.getlist(form.photos.name)
     for file in files:
         filename = secure_filename(file.filename)

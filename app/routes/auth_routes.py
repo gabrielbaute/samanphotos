@@ -7,7 +7,7 @@ from flask_login import login_user, logout_user, login_required
 
 from database.db_config import db
 from database.models import User
-from app.forms import LoginForm, RegisterForm, RestorePasswordForm
+from app.forms import LoginForm, RegisterForm, ResetPasswordForm
 from core.storage import create_user_storage
 from core.mail import send_reset_email
 
@@ -63,7 +63,7 @@ def register():
 @auth.route("/resset_password", methods=["GET", "POST"])
 def resset_password():
     """Ruta de restablecimiento de contraseña"""
-    form = RestorePasswordForm()
+    form = ResetPasswordForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:

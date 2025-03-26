@@ -12,6 +12,7 @@ from .photos_forms import(
     CreateAlbumForm,
     UploadPhotoForm
 )
+from .profile_forms import EditProfileForm
 
 __all__ = [
     'LoginForm',
@@ -23,5 +24,6 @@ __all__ = [
     'ReactivateAccountForm',
     'VerificationCodeForm',
     'CreateAlbumForm',
-    'UploadPhotoForm'
+    'UploadPhotoForm',
+    'EditProfileForm'
 ]
