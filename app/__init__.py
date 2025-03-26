@@ -43,7 +43,7 @@ def create_app():
         Returns:
             User: Objeto de usuario
         """
-        return User.query.get(int(user_id))
+        return User.query.get(user_id)
 
     # Blueprints register
     register_blueprints(app)

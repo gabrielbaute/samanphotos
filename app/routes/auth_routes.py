@@ -2,8 +2,9 @@
 
 import uuid
 
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_user, logout_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db_config import db
 from database.models import User
@@ -18,14 +19,26 @@ auth = Blueprint("auth", __name__)
 def login():
     """Ruta de inicio de sesión"""
     form = LoginForm()
+    email = form.email.data
+    password = form.password.data
+    
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and user.verify_password(form.password.data):
-            login_user(user)
-            next_page = request.args.get("next")
-            return redirect(next_page or url_for("photos.profile"))
-        else:
-            flash("Usuario o contraseña inválidos")
+        try:     
+            user = User.query.filter_by(email=form.email.data).first()
+        
+            if not user:
+                flash('Por favor verifique sus datos de inicio de sesión y vuelva a intentarlo.', 'danger')
+                return redirect(url_for('auth.login'))
+
+        
+            if check_password_hash(user.password, password):
+                login_user(user)
+                flash('Login successful', 'success')
+                return redirect(url_for("photos.profile"))            
+            else:
+                flash("Usuario o contraseña inválidos")
+        except Exception as e:
+            current_app.logger.error(f"Error al intentar autenticar: {e}")
     return render_template("login.html", form=form)
 
 
@@ -45,10 +58,11 @@ def register():
         # Crear el usuario y su ruta de almacenamiento
         storage_user_id = uuid.uuid4().hex
         storage_path = create_user_storage(storage_user_id)
+        password_hash = generate_password_hash(form.password.data)
         new_user = User(
             email=form.email.data,
             username=form.username.data,
-            password=form.password.data,
+            password=password_hash,
             storage_path=storage_path,
         )
         db.session.add(new_user)
