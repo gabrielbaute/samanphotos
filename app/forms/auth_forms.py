@@ -11,7 +11,7 @@ class RegisterForm(FlaskForm):
     username = StringField('Nombre de usuario', validators=[DataRequired()])
     email = StringField('Correo electrónico', validators=[DataRequired(), Email()])
     password = PasswordField('Contraseña', validators=[DataRequired(), EqualTo('confirm', message='Passwords must match')])
-    confirm_password = PasswordField('Repita su contraseña')
+    confirm = PasswordField('Repita su contraseña')
     submit = SubmitField('Crear cuenta')
 
 class ResendConfirmationForm(FlaskForm):
