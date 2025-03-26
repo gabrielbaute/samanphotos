@@ -1,0 +1,57 @@
+<aside class="column is-one-quarter sidebar">
+    <div class="container">
+        <ul>
+            <li>
+                <div class="content" style="padding: 3%;">
+                    <h3 class="subtitle">Gestiona</h3>
+                </div>
+            </li>
+            <br>
+            <li>
+                <a href="{{ url_for('photos.profile') }}">
+                    <div class="box">
+                        Subir fotos/crear album
+                    </div>
+                </a>
+            </li>
+            <br>
+            <li>
+                <div class="content" style="padding: 3%;">
+                    <h3 class="subtitle">Explora</h3>
+                </div>
+            </li>
+            <br>
+            <li>
+                <a href="{{ url_for('photos.view_albums') }}">
+                    <div class="box">
+                        Albums
+                    </div>
+                </a>
+            </li>
+            <br>
+            <li>
+                <a href="{{ url_for('photos.timeline_photos') }}">
+                    <div class="box">
+                        Línea de Tiempo
+                    </div>
+                </a>
+            </li>
+            <br>
+            <li>
+                <a href="{{ url_for('photos.geolocalization') }}">
+                    <div class="box">
+                        Geolocalización
+                    </div>
+                </a>
+            </li>
+            <br>
+            <li>
+                <a href="{{ url_for('photos.people') }}">
+                    <div class="box">
+                        Personas
+                    </div>
+                </a>
+            </li>
+        </ul>   
+    </div>
+</aside>
