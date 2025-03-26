@@ -5,7 +5,7 @@ import uuid
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required
 
-from app import db
+from database.db_config import db
 from database.models import User
 from app.forms import LoginForm, RegisterForm, RestorePasswordForm
 from core.storage import create_user_storage

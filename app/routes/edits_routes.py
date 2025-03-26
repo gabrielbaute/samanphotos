@@ -5,7 +5,7 @@ import os
 from flask import Blueprint, redirect, render_template, url_for, flash, request
 from flask_login import login_required, current_user
 
-from app.extensions import db
+from database.db_config import db
 from database.models import Photo, Album
 from app.forms import EditProfileForm
 

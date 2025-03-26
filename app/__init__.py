@@ -15,11 +15,12 @@ from flask_login import LoginManager, current_user
 from flask_jwt_extended import JWTManager
 from datetime import datetime
 
-from app.extensions import db, mail, login_manager
+from app.extensions import mail, login_manager
 from database.models import User, Role
+from database.db_config import db
 from app.routes import register_blueprints
-from core.storage import create_user_storage
 from core.samanapi import api_bp
+from utils import create_admin_user
 
 cache=Cache()
 jwt=JWTManager()
@@ -79,31 +80,3 @@ def load_user(user_id):
         User: Objeto de usuario
     """
     return User.query.get(int(user_id))
-
-
-def create_admin_user():
-    """Crear un usuario administrador si no existe"""
-    admin_email = os.getenv("ADMIN_EMAIL")
-    admin_password = os.getenv("ADMIN_PASSWORD")
-
-    if not User.query.filter_by(email=admin_email).first():
-        admin_role = Role.query.filter_by(name="admin").first()
-        if not admin_role:
-            admin_role = Role(name="admin")
-            db.session.add(admin_role)
-            db.session.commit()
-
-        # Crear la ruta de almacenamiento antes de crear el usuario
-        storage_user_id = (
-            uuid.uuid4().hex
-        )  # Generar un ID temporal único para crear la ruta
-        storage_path = create_user_storage(storage_user_id)
-
-        admin_user = User(
-            email=admin_email,
-            password=admin_password,
-            roles=[admin_role],
-            storage_path=storage_path,
-        )
-        db.session.add(admin_user)
-        db.session.commit()
