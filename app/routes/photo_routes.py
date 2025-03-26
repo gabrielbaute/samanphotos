@@ -18,7 +18,8 @@ from flask import (
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
-from app.models import db, User, Photo, Album, FaceEncoding
+from app.extensions import db
+from database.models import User, Photo, Album, FaceEncoding
 from app.forms import UploadPhotoForm, CreateAlbumForm
 from core.metadata import extract_metadata
 from core.facerecognition import process_photo, comparefaces

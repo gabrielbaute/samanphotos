@@ -16,7 +16,7 @@ from flask_jwt_extended import JWTManager
 from datetime import datetime
 
 from app.extensions import db, mail, login_manager
-from app.models import User, Role
+from database.models import User, Role
 from app.routes import register_blueprints
 from core.storage import create_user_storage
 from core.samanapi import api_bp

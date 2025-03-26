@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required
 
 from app import db
-from app.models import User
+from database.models import User
 from app.forms import LoginForm, RegisterForm, RestorePasswordForm
 from core.storage import create_user_storage
 from core.mail import send_reset_email

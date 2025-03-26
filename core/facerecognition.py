@@ -1,6 +1,7 @@
 import face_recognition
 import numpy as np
-from app.models import Photo, FaceEncoding, db
+from database.models import Photo, FaceEncoding
+from app.extensions import db
 
 def detect_faces(photo):
     """Detecta rostros en una foto y devuelve las codificaciones y ubicaciones"""

@@ -4,7 +4,8 @@ from flask_restful import Api, reqparse, Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
 from core.facerecognition import process_photo
-from app.models import Photo, db
+from database.models import Photo
+from app.extensions import db
 
 
 api_bp= Blueprint("api", __name__)
