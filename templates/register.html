@@ -1,62 +1,76 @@
 {% extends "base_public.html" %}
 
-{% block title %}Registrarse{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
-<div class="section">
-    <div class="container">
-        <h1 class="title">
-            Registrarse
-        </h1>
-        <p class="subtitle is-4">Llene el siguiente formulario y cree su cuenta</p>
-    </div>
-</div>
-<section class="section is-fullheight">
-    <div class="container">
-        <div class="columns is-centered">
-            <div class="column is-one-third">
-                <form action="{{ url_for('auth.register') }}" method="POST">
-                    {{ form.hidden_tag() }}
-                    <div class="field">
-                        <label class="label">Correo Electrónico</label>
-                        <div class="control">
-                            {{ form.email(class="input") }}
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Nombre</label>
-                        <div class="control">
-                            {{ form.username(class="input") }}
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Contraseña</label>
-                        <div class="control">
-                            {{ form.password(class="input") }}
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Confirmar Contraseña</label>
-                        <div class="control">
-                            {{ form.confirm_password(class="input") }}
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            {{ form.submit(class="button is-primary is-fullwidth") }}
-                        </div>
-                    </div>
-                </form>
-                <br>
-                <p>
-                    ¿Ya tiene cuenta?
-                </p>
-                <br>
-                <a href="{{ url_for('auth.login') }}">
-                    <button class="button is-info is-fullwidth">Iniciar Sesión</button>
-                </a>
+<section>
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <div class="box">
+          <form action="{{ url_for('auth.register') }}" method="POST">
+            <h2 class="title is-2 has-text-centered">Register</h2>
+            {{ form.hidden_tag() }}
+
+            <!-- Campo de nombre de usuario -->
+            <div class="field">
+              {{ form.username.label(class="label") }}
+              <div class="control has-icons-left">
+                {{ form.username(class="input", placeholder="Ingrese un nombre usuario") }}
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
             </div>
+
+            <!-- Campo de email -->
+            <div class="field">
+              {{ form.email.label(class="label") }}
+              <div class="control has-icons-left">
+                {{ form.email(class="input", placeholder="Ingrese su dirección de correo electrónico") }}
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Campo de contraseña -->
+            <div class="field">
+              {{ form.password.label(class="label") }}
+              <div class="control has-icons-left">
+                {{ form.password(class="input", placeholder="Ingrese su contraseña") }}
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Campo de confirmación de contraseña -->
+            <div class="field">
+              {{ form.confirm.label(class="label") }}
+              <div class="control has-icons-left">
+                {{ form.confirm(class="input", placeholder="Confirme su contraseña") }}
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="field">
+              <div class="control">
+                {{ form.submit(class="button is-primary is-fullwidth") }}
+              </div>
+            </div>
+          </form>
+          <br>
+          <div class="has-text-centered">
+            <a href="{{ url_for('auth.resset_password') }}">¿Olvidó su contraseña?</a> |
+            <a href="{{ url_for('auth.login') }}">Iniciar sesión en una cuenta existente</a>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 {% endblock %}
