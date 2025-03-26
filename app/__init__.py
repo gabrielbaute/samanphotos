@@ -7,11 +7,12 @@ from flask_migrate import Migrate
 from flask_restful import Api
 from flask_login import current_user
 
-from app.extensions import mail, login_manager, cache, jwt
+from app.extensions import login_manager, cache, jwt
 from database.models import User
 from database.db_config import db, init_db
 from app.routes import register_blueprints
 from core.samanapi import api_bp
+from core.mail import mail
 from utils import create_admin_user, setup_logging
 from config import Config
 

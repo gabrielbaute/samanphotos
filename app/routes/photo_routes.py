@@ -21,8 +21,7 @@ from werkzeug.utils import secure_filename
 from database.db_config import db
 from database.models import User, Photo, Album, FaceEncoding
 from app.forms import UploadPhotoForm, CreateAlbumForm
-from core.metadata import extract_metadata
-from core.facerecognition import process_photo, comparefaces
+from core import extract_metadata, process_photo, comparefaces
 import logging
 import random
 

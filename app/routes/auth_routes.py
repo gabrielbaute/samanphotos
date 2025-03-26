@@ -8,7 +8,7 @@ from flask_login import login_user, logout_user, login_required
 from database.db_config import db
 from database.models import User
 from app.forms import LoginForm, RegisterForm, ResetPasswordForm
-from core.storage import create_user_storage
+from core import create_user_storage
 from core.mail import send_reset_email
 
 auth = Blueprint("auth", __name__)
