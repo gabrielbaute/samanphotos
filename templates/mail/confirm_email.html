@@ -1,0 +1,12 @@
+{% extends 'email_templates/base_email.html' %}
+
+{% block title %}Email Confirmation{% endblock %}
+
+{% block header %}Confirm Your Email{% endblock %}
+
+{% block content %}
+<p>Hi {{ username }},</p>
+<p>Thank you for registering. Please click the link below to confirm your email address:</p>
+<p><a href="{{ url_for('auth.confirm_email', token=token, _external=True) }}">Confirm Email</a></p>
+<p>If you did not register, please ignore this email.</p>
+{% endblock %}

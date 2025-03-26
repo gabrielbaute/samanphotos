@@ -1,0 +1,18 @@
+{% extends 'email_templates/base_email.html' %}
+
+{% block title %}2FA Disabled{% endblock %}
+
+{% block header %}Two-Factor Authentication Disabled{% endblock %}
+
+{% block content %}
+<p>Hi {{ username }},</p>
+<p>Two-Factor Authentication (2FA) has been disabled for your account.</p>
+<ul>
+  <li><strong>IP Address:</strong> {{ ip_origen }}</li>
+  <li><strong>Device:</strong> {{ dispositivo }}</li>
+  <li><strong>User Agent:</strong> {{ user_agent }}</li>
+</ul>
+<p>If this was you, no further action is required.</p>
+<p>If you did not perform this action, please contact support immediately.</p>
+<p>The {{ app_name }} Security Team</p>
+{% endblock %}
