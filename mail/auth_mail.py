@@ -1,5 +1,5 @@
 from flask_mail import Message
-from flask import render_template
+from flask import render_template, current_app
 from datetime import datetime, timedelta
 import logging, random
 
@@ -18,10 +18,10 @@ def send_confirmation_email(user):
         msg.html = render_template('mail/confirm_email.html', username=user.username, token=token)
         mail.send(msg)
         
-        logging.info(f"Confirmation email sent to {user.email}.")
+        current_app.logger.info(f"Confirmation email sent to {user.email}.")
     
     except Exception as e:
-        logging.error(f"Failed to send confirmation email to {user.email}: {e}")
+        current_app.logger.error(f"Failed to send confirmation email to {user.email}: {e}")
 
 def send_reset_password_email(user):
     """
@@ -34,10 +34,10 @@ def send_reset_password_email(user):
         msg.html = render_template('mail/reset_password.html', username=user.username, token=token)
         mail.send(msg)
         
-        logging.info(f"Reset password email sent to {user.email}.")
+        current_app.logger.info(f"Reset password email sent to {user.email}.")
 
     except Exception as e:
-        logging.error(f"Failed to send reset password email to {user.email}: {e}")    
+        current_app.logger.error(f"Failed to send reset password email to {user.email}: {e}")    
 
 def send_account_locked_email(user):
     """
@@ -48,10 +48,10 @@ def send_account_locked_email(user):
         msg.html = render_template('mail/account_locked_email.html', username=user.username)
         mail.send(msg)
 
-        logging.info(f"Account locked email sent to {user.email}.")
+        current_app.logger.info(f"Account locked email sent to {user.email}.")
     
     except Exception as e:
-        logging.error(f"Failed to send account locked email to {user.email}: {e}")
+        current_app.logger.error(f"Failed to send account locked email to {user.email}: {e}")
 
 def send_verification_code(user):
     """
@@ -79,9 +79,9 @@ def send_verification_code(user):
         )
         mail.send(msg)
 
-        logging.info(f"Verification code sent to {user.email}.")
+        current_app.logger.info(f"Verification code sent to {user.email}.")
         return code
     
     except Exception as e:
-        logging.error(f"Failed to send verification code to {user.email}: {e}")
+        current_app.logger.error(f"Failed to send verification code to {user.email}: {e}")
         return None

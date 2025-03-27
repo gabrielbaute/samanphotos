@@ -1,4 +1,3 @@
-from .config_mail import mail
 from .auth_mail import(
     send_confirmation_email,
     send_account_locked_email,

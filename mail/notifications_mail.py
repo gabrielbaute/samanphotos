@@ -1,8 +1,8 @@
+from flask import current_app
 from flask_mail import Message
 from database.models import User
 from mail.config_mail import mail
 from flask import request, render_template
-import logging
 
 def send_login_notification(user, ip_address):
     try:
@@ -23,10 +23,10 @@ def send_login_notification(user, ip_address):
         )
         mail.send(msg)
 
-        logging.info(f"Login notification email sent to {user.email} from IP {ip_address} via {device}/{browser}.")
+        current_app.logger.info(f"Login notification email sent to {user.email} from IP {ip_address} via {device}/{browser}.")
 
     except Exception as e:
-        logging.error(f"Failed to send login notification email to {user.email}: {e}")
+        current_app.logger.error(f"Failed to send login notification email to {user.email}: {e}")
 
 def send_enable_2fa_notification(user):
     try:
@@ -51,9 +51,9 @@ def send_enable_2fa_notification(user):
         )
         mail.send(msg)
 
-        logging.info(f"2FA enable notification email sent to {user.email} from IP {ip_origen} via {dispositivo}.")
+        current_app.logger.info(f"2FA enable notification email sent to {user.email} from IP {ip_origen} via {dispositivo}.")
     except Exception as e:
-        logging.error(f"Failed to send 2FA enable notification email to {user.email}: {e}")
+        current_app.logger.error(f"Failed to send 2FA enable notification email to {user.email}: {e}")
 
 def send_disable_2fa_notification(user):
     try:
@@ -78,9 +78,9 @@ def send_disable_2fa_notification(user):
         )
         mail.send(msg)
 
-        logging.info(f"2FA disable notification email sent to {user.email} from IP {ip_origen} via {dispositivo}.")
+        current_app.logger.info(f"2FA disable notification email sent to {user.email} from IP {ip_origen} via {dispositivo}.")
     except Exception as e:
-         logging.error(f"Failed to send 2FA disable notification email to {user.email}: {e}")
+         current_app.logger.error(f"Failed to send 2FA disable notification email to {user.email}: {e}")
 
 def send_welcome_email(user):
     try:
@@ -98,10 +98,10 @@ def send_welcome_email(user):
         )
         mail.send(msg)
 
-        logging.info(f"Welcome email sent to {user.email}.")
+        current_app.logger.info(f"Welcome email sent to {user.email}.")
 
     except Exception as e:
-        logging.error(f"Failed to welcome email to {user.email}: {e}")
+        current_app.logger.error(f"Failed to welcome email to {user.email}: {e}")
 
 def send_account_activation_email(user):
     try:
@@ -119,10 +119,10 @@ def send_account_activation_email(user):
         )
         mail.send(msg)
 
-        logging.info(f"Activation account email sent to {user.email}.")
+        current_app.logger.info(f"Activation account email sent to {user.email}.")
 
     except Exception as e:
-        logging.error(f"Failed to sent activation email to {user.email}: {e}.")
+        current_app.logger.error(f"Failed to sent activation email to {user.email}: {e}.")
 
 def send_password_change_notification(user, ip_address):
     try:
@@ -143,7 +143,7 @@ def send_password_change_notification(user, ip_address):
         )
         mail.send(msg)
 
-        logging.info(f"Password change notification email sent to {user.email} from IP {ip_address} via {device}/{browser}.")
+        current_app.logger.info(f"Password change notification email sent to {user.email} from IP {ip_address} via {device}/{browser}.")
     
     except Exception as e:
-        logging.error(f"Failed to send password change notification email to {user.email} from IP {ip_address} via {device}.: {e}")
+        current_app.logger.error(f"Failed to send password change notification email to {user.email} from IP {ip_address} via {device}.: {e}")
