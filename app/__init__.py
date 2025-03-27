@@ -2,7 +2,7 @@
 
 import os
 
-from flask import Flask, current_app
+from flask import Flask
 from flask_migrate import Migrate
 from flask_restful import Api
 from flask_login import current_user
@@ -12,7 +12,7 @@ from database.models import User
 from database.db_config import db, init_db
 from app.routes import register_blueprints
 from core.samanapi import api_bp
-from core.mail import mail
+from mail.config_mail import mail
 from utils import create_admin_user, setup_logging
 from config import Config
 
@@ -24,6 +24,10 @@ def create_app():
     
     # Set config variables
     app.config.from_object(Config)
+    app.config.update({
+        'MAIL_USE_TLS': True,
+        'MAIL_USE_SSL': False,
+    })
 
     # Initialize components
     init_db(app)
@@ -31,10 +35,11 @@ def create_app():
     mail.init_app(app)
     migrate = Migrate(app, db)
     login_manager.init_app(app)
-    login_manager.login_view = "main.login"
+    login_manager.login_view = "auth.login"
     cache.init_app(app)
     jwt.init_app(app)
-    
+
+
     @login_manager.user_loader
     def load_user(user_id):
         """Cargar un usuario por ID
@@ -57,8 +62,6 @@ def create_app():
     if not os.path.exists(app.config["UPLOAD_FOLDER"]):
         os.makedirs(app.config["UPLOAD_FOLDER"])
 
-    
-    
     @app.context_processor
     def inject_app_name():
         return {
@@ -68,14 +71,3 @@ def create_app():
             }
     
     return app
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    """Cargar un usuario por ID
-    Args:
-        user_id (int): ID del usuario
-    Returns:
-        User: Objeto de usuario
-    """
-    return User.query.get(int(user_id))
