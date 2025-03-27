@@ -1,5 +1,7 @@
 import uuid
+from flask import current_app
 from werkzeug.security import generate_password_hash
+
 from config import Config
 from utils.storage_id import generate_storage_user_id
 from core.storage import create_user_storage
@@ -32,7 +34,7 @@ def create_admin_user():
             db.session.add(admin)
             db.session.commit()
         else:
-            print("Usuario admin ya registrado.")
+            current_app.logger.info("Usuario admin ya registrado.")
     
     except Exception as e:
-        print(f"Error al crear el usuario admin: {e}")
+        current_app.logger.error(f"Error al crear el usuario admin: {e}")
