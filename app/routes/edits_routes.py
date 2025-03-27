@@ -42,10 +42,10 @@ def edit_profile():
     """Editar el perfil del usuario"""
     form = EditProfileForm()
     if form.validate_on_submit():
-        current_user.first_name = form.first_name.data
-        current_user.last_name = form.last_name.data
+        #current_user.first_name = form.first_name.data
+        #current_user.last_name = form.last_name.data
         current_user.email = form.email.data
-        current_user.age = form.age.data
+        #current_user.age = form.age.data
         current_user.theme_preference = form.theme_preference.data
         if form.password.data:
             current_user.set_password(form.password.data)
@@ -53,22 +53,15 @@ def edit_profile():
         flash("Tu perfil ha sido actualizado.")
         return redirect(url_for("photos.profile"))
 
-    form.first_name.data = current_user.first_name
-    form.last_name.data = current_user.last_name
+    #form.first_name.data = current_user.first_name
+    #form.last_name.data = current_user.last_name
     form.email.data = current_user.email
-    form.age.data = current_user.age
+    #form.age.data = current_user.age
     form.theme_preference.data = current_user.theme_preference
 
     # Preparar los datos de seguridad
-    security_info = {
-        "last_login_at": current_user.last_login_at,
-        "current_login_at": current_user.current_login_at,
-        "last_login_ip": current_user.last_login_ip,
-        "current_login_ip": current_user.current_login_ip,
-        "login_count": current_user.login_count,
-    }
 
-    return render_template("edit_profile.html", form=form, security_info=security_info)
+    return render_template("edit_profile.html", form=form)
 
 
 @edits.route("/delete_photo/<int:photo_id>", methods=["POST"])

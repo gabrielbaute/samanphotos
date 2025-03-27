@@ -181,7 +181,7 @@ def view_photo(photo_id):
     photo = Photo.query.get_or_404(photo_id)
     if photo.user_id != current_user.id:
         flash("No tienes permiso para ver esta foto.")
-        return redirect(url_for("main.timeline_photos"))
+        return redirect(url_for("photos.timeline_photos"))
     # Método para borrar foto
     if request.method == "POST":
         db.session.delete(photo)
@@ -226,7 +226,7 @@ def download_photo(photo_id):
     photo = Photo.query.get_or_404(photo_id)
     if photo.user_id != current_user.id:
         flash("No tienes permiso para descargar esta foto.")
-        return redirect(url_for("main.timeline_photos"))
+        return redirect(url_for("photos.timeline_photos"))
     try:
         return send_file(
             photo.path, as_attachment=True, download_name=photo.original_filename
