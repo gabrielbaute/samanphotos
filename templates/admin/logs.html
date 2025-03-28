@@ -1,0 +1,11 @@
+{% extends 'admin/dashboard.html' %}
+{% block tabcontent %}
+<section class="section">
+    <h2>Log del Administrador</h2>
+    <pre>
+        {% for line in log_data %}
+        {{ line }}
+        {% endfor %}
+    </pre>
+</section>
+{% endblock %}
