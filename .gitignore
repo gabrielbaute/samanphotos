@@ -15,6 +15,7 @@ instance/
 *.swp
 
 # Archivos de log
+logs/
 *.log
 
 # SQLite database

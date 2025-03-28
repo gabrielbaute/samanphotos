@@ -1,0 +1,12 @@
+{% extends 'mail/base.html' %}
+
+{% block title %}Account Activated{% endblock %}
+
+{% block header %}Congratulations! Your Account is Activated{% endblock %}
+
+{% block content %}
+<p>Hi {{ username }},</p>
+<p>Congratulations! Your account has been successfully activated.</p>
+<p>You now have access to the main features of {{ app_name }}. Start exploring and enjoy the full experience!</p>
+<p>If you encounter any issues or need help, don't hesitate to reach out to our support team.</p>
+{% endblock %}
