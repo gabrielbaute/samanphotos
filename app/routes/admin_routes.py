@@ -1,13 +1,9 @@
 """Rutas para admin."""
 
-import os
-
-from flask import Blueprint, redirect, render_template, url_for, flash, request
+from flask import Blueprint, redirect, render_template, url_for, flash
 from flask_login import login_required, current_user
 from config import Config
 from utils import get_logs, get_stats, is_admin
-from database.db_config import db
-from database.models import User, SessionHistory
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 

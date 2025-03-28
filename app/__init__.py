@@ -11,7 +11,7 @@ from database.db_config import db, init_db
 from app.routes import register_blueprints
 from core.samanapi import api_bp
 from mail.config_mail import mail
-from utils import create_admin_user, setup_logging
+from utils import create_admin_user, setup_logging, is_admin
 from config import Config
 
 def create_app():
@@ -24,7 +24,6 @@ def create_app():
     # Set config variables
     app.config.from_object(Config)
     
-
     # Initialize components
     init_db(app)
     setup_logging(app)
@@ -34,6 +33,7 @@ def create_app():
     login_manager.login_view = "auth.login"
     cache.init_app(app)
     jwt.init_app(app)
+    app.jinja_env.globals['is_admin'] = is_admin
 
     @login_manager.user_loader
     def load_user(user_id):

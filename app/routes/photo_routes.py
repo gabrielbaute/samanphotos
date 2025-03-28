@@ -19,10 +19,9 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
 from database.db_config import db
-from database.models import User, AuditLog, SessionHistory, Photo, Album, FaceEncoding
+from database.models import User, Photo, Album, FaceEncoding
 from app.forms import UploadPhotoForm, CreateAlbumForm
 from core import extract_metadata, process_photo, comparefaces
-import logging
 import random
 
 photos = Blueprint("photos", __name__)

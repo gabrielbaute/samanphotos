@@ -2,8 +2,6 @@
 
 from flask import Blueprint, render_template, current_app, url_for, redirect
 from flask_login import current_user
-#from flask_mail import Message, Mail
-#from mail.config_mail import mail
 
 public = Blueprint("public", __name__)
 
