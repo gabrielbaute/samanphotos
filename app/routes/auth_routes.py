@@ -1,15 +1,16 @@
 """Rutas de autenticación de usuarios"""
 
-import uuid
+import uuid, json
 
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, session
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db_config import db
-from database.models import User, PasswordHistory, SessionHistory
+from database.models import User, PasswordHistory
 from app.forms import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
 from core import create_user_storage
+from utils import register_session_event, registrar_auditoria, register_password_history_event, ACCIONES
 from mail import(
     send_reset_password_email,
     send_login_notification,
@@ -43,19 +44,8 @@ def login():
             if check_password_hash(user.password, password):
                 login_user(user)
                 send_login_notification(user, request.remote_addr)
+                register_session_event(user, request)
                 flash('Login successful', 'success')
-
-                # Registrar el evento de inicio de sesión
-                session_event = SessionHistory(
-                    usuario_id=user.id,
-                    tipo_evento='LOGIN',
-                    ip_origen=request.remote_addr,
-                    dispositivo=request.user_agent.platform,
-                    navegador=request.user_agent.browser
-                )
-                db.session.add(session_event)
-                db.session.commit()
-
                 return redirect(url_for("photos.profile")) 
             else:
                 flash("Usuario o contraseña inválidos")
@@ -119,11 +109,20 @@ def confirm_email(token):
     user.is_active = True
 
     # Registrar la contraseña inicial en el historial
-    password_history = PasswordHistory(user_id=user.id, password_hash=user.password)
-    db.session.add(password_history)
+    register_password_history_event(user)
 
+    # Registrar la acción de habilitar la cuenta
+    registrar_auditoria(
+        usuario_id=user.id,
+        accion=ACCIONES["ACTIVACION"],
+        detalles=json.dumps({
+            "ip_origen": request.remote_addr,
+            "dispositivo": request.user_agent.platform,
+            "user_agent": request.headers.get('User-Agent')
+        }),
+    )
+    
     db.session.commit()
-
     # Enviar correo de activación exitosa
     send_account_activation_email(user)
 
@@ -161,6 +160,18 @@ def reset_password(token):
 
         # Actualizar la contraseña del usuario
         user.password = generate_password_hash(password, method='pbkdf2:sha256')
+        register_password_history_event(user)
+        
+        # **Registrar la acción en la auditoría**
+        registrar_auditoria(
+            usuario_id=user.id,
+            accion=ACCIONES["CAMBIO_CONTRASENA"],
+            detalles=json.dumps({
+                "ip_origen": request.remote_addr,
+                "dispositivo": request.user_agent.platform,
+                "user_agent": request.headers.get('User-Agent'),
+            }),
+        )
 
         db.session.commit()
         send_password_change_notification(user, request.remote_addr)

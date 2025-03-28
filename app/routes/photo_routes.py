@@ -19,7 +19,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
 from database.db_config import db
-from database.models import User, Photo, Album, FaceEncoding
+from database.models import User, AuditLog, SessionHistory, Photo, Album, FaceEncoding
 from app.forms import UploadPhotoForm, CreateAlbumForm
 from core import extract_metadata, process_photo, comparefaces
 import logging
@@ -114,6 +114,20 @@ def profile():
     #     return redirect(url_for("photos.profile"))
     return render_template(
         "profile.html", upload_form=upload_form, album_form=album_form, albums=albums
+    )
+
+@photos.route("/profile-security", methods=["GET", "POST"])
+@login_required
+def profile_security():
+    # Cargar historial de sesiones y auditoría para las pestañas
+    session_history = current_user.session_history  # Obtén desde el modelo User
+    audit_logs = current_user.audit_logs  # Obtén desde el modelo User
+
+    return render_template(
+        'security.html',
+        user=current_user,
+        session_history=session_history,
+        audit_logs=audit_logs
     )
 
 
