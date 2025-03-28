@@ -1,0 +1,13 @@
+<div class="tabs is-boxed">
+    <ul>
+      <li class="{% if request.endpoint == 'photo.profile' %}is-active{% endif %}">
+        <a href="{{ url_for('photos.profile') }}">Perfil</a>
+      </li>
+      <li class="{% if request.endpoint == 'photo.sessions' %}is-active{% endif %}">
+        <a href="{{ url_for('photos.sessions') }}">Historial de Sesiones</a>
+      </li>
+      <li class="{% if request.endpoint == 'photo.audit' %}is-active{% endif %}">
+        <a href="{{ url_for('photos.audit') }}">Registro de Actividad</a>
+      </li>
+    </ul>
+  </div>

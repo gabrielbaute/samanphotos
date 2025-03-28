@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Historial de Sesiones - {{ user.username }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <!-- Navigation Tabs -->
+    {% include 'partials/_profile_navtab.html' %}
+
+    <div class="container">
+        <h1 class="title">Historial de Sesiones</h1>
+        <p>Si no reconoces alguna de las acciones aquí reflejadas, por favor contacta al equipo de soporte de {{ app_name }}.</p>
+        <br>
+        <table class="table is-fullwidth">
+        <thead>
+            <tr>
+            <th>Fecha</th>
+            <th>Dirección IP</th>
+            <th>Dispositivo</th>
+            <th>Navegador</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in session_history %}
+            <tr>
+            <td>{{ session.fecha_evento }}</td>
+            <td>{{ session.ip_origen }}</td>
+            <td>{{ session.dispositivo or "Unknown" }}</td>
+            <td>{{ session.navegador or "Unknown" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

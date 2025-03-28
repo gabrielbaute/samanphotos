@@ -39,16 +39,16 @@ def uploaded_file(filename):
     return send_from_directory(user_storage_path, filename)
 
 
-@photos.route("/profile", methods=["GET", "POST"])
+@photos.route("/create", methods=["GET", "POST"])
 @login_required
-def profile():
+def create():
     """Ruta para subir fotos y crear albums en el perfil del usuario."""
     upload_form = UploadPhotoForm()
     album_form = CreateAlbumForm()
     albums = Album.query.filter_by(user_id=current_user.id).all()
     
     return render_template(
-        "photos/profile.html", upload_form=upload_form, album_form=album_form, albums=albums
+        "photos/create.html", upload_form=upload_form, album_form=album_form, albums=albums
     )
 
 @photos.route("/profile-security", methods=["GET", "POST"])
@@ -88,7 +88,7 @@ def upload_photo():
     form = UploadPhotoForm()
     if "photos" not in request.files:
         flash("No se ha seleccionado ninguna foto.")
-        return redirect(url_for("photos.profile"))
+        return redirect(url_for("photos.create"))
     
     files = request.files.getlist(form.photos.name)
     for file in files:
@@ -117,7 +117,7 @@ def upload_photo():
         db.session.add(new_photo)
     db.session.commit()
     flash("Fotos subidas con éxito.")
-    return redirect(url_for("photos.profile"))
+    return redirect(url_for("photos.create"))
 
 
 @photos.route("/photo/<int:photo_id>", methods=["GET", "POST"])
@@ -209,7 +209,7 @@ def view_album(album_id):
     return render_template("photos/album.html", album=album, photos=photos_db)
 
 
-@photos.route("/album/create", methods=["POST"], endpoint="create_album")
+@photos.route("/album/create-album", methods=["POST"], endpoint="create_album")
 @login_required
 def create_album():
     """Ruta para subir un album."""
@@ -219,7 +219,7 @@ def create_album():
         db.session.add(new_album)
         db.session.commit()
         flash("Álbum creado con éxito.")
-    return redirect(url_for("photos.profile"))
+    return redirect(url_for("photos.create"))
 
 @photos.route("/download_album/<int:album_id>")
 @login_required
@@ -306,3 +306,28 @@ def scan_faces():
         process_photo(photo)
     flash("Face scan completed successfully!", "success")
     return redirect(url_for("photos.people"))
+
+@photos.route('/profile')
+@login_required
+def profile():
+    return render_template('photos/profile.html', user=current_user)
+
+@photos.route('/sessions')
+@login_required
+def sessions():
+    # Pasa el historial de sesiones
+    session_history = [
+        # Ejemplo de datos. Obtén esto de tu base de datos
+        {"fecha_evento": "2025-03-28", "ip_origen": "192.168.1.1", "dispositivo": "PC", "navegador": "Chrome"}
+    ]
+    return render_template('photos/sessions.html', user=current_user, session_history=session_history)
+
+@photos.route('/audit')
+@login_required
+def audit():
+    # Pasa los registros de auditoría
+    audit_logs = [
+        # Ejemplo de datos. Obtén esto de tu base de datos
+        {"fecha_cambio": "2025-03-27", "accion": "Cambio de contraseña", "detalles": "Contraseña actualizada correctamente"}
+    ]
+    return render_template('photos/audit.html', user=current_user, audit_logs=audit_logs)

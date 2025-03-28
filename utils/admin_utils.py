@@ -50,7 +50,6 @@ def get_stats():
             'mbs_used': get_user_storage(user)
         } for user in users
     ]
-    print(user_stats)
     return user_stats
 
 def is_admin(user):
