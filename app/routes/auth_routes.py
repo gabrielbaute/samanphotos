@@ -2,12 +2,12 @@
 
 import uuid
 
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, session
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db_config import db
-from database.models import User, PasswordHistory
+from database.models import User, PasswordHistory, SessionHistory
 from app.forms import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
 from core import create_user_storage
 from mail import(
@@ -44,6 +44,18 @@ def login():
                 login_user(user)
                 send_login_notification(user, request.remote_addr)
                 flash('Login successful', 'success')
+
+                # Registrar el evento de inicio de sesión
+                session_event = SessionHistory(
+                    usuario_id=user.id,
+                    tipo_evento='LOGIN',
+                    ip_origen=request.remote_addr,
+                    dispositivo=request.user_agent.platform,
+                    navegador=request.user_agent.browser
+                )
+                db.session.add(session_event)
+                db.session.commit()
+
                 return redirect(url_for("photos.profile")) 
             else:
                 flash("Usuario o contraseña inválidos")
