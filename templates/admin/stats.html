@@ -1,7 +1,13 @@
 {% extends 'admin/dashboard.html' %}
-{% block tabcontent %}
+{% block content %}
 <section class="section">
-    <h2>Estadísticas de Usuarios</h2>
+    <div class="tabs">
+        <ul>
+            <li><a href="{{ url_for('admin.admin_logs') }}">Logs</a></li>
+            <li><a href="{{ url_for('admin.admin_stats') }}">Estadísticas</a></li>
+        </ul>
+    </div>
+    <h2 class="title is-4">Estadísticas de Usuarios</h2>
     <table class="table">
         <thead>
             <tr>
@@ -9,17 +15,17 @@
                 <th>Activo</th>
                 <th>Sesiones</th>
                 <th>Última Conexión</th>
-                <th>Espacio Usado (MB)</th>
+                <th>Espacio Usado</th>
             </tr>
         </thead>
         <tbody>
-            {% for user in user_stats %}
+            {% for user in stats %}
             <tr>
                 <td>{{ user.username }}</td>
                 <td>{{ user.is_active }}</td>
                 <td>{{ user.session_count }}</td>
                 <td>{{ user.last_connection }}</td>
-                <td>{{ user.mbs_used }}</td>
+                <td>{{ user.mbs_used }} Mb</td>
             </tr>
             {% endfor %}
         </tbody>
