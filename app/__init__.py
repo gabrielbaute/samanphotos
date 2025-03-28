@@ -4,8 +4,6 @@ import os
 
 from flask import Flask
 from flask_migrate import Migrate
-from flask_restful import Api
-from flask_login import current_user
 
 from app.extensions import login_manager, cache, jwt
 from database.models import User
@@ -18,6 +16,7 @@ from config import Config
 
 def create_app():
     """Crea una instancia de la aplicación Flask"""
+    
     app = Flask(__name__,
                 template_folder='../templates',
                 static_folder='../static')
@@ -39,15 +38,8 @@ def create_app():
     cache.init_app(app)
     jwt.init_app(app)
 
-
     @login_manager.user_loader
     def load_user(user_id):
-        """Cargar un usuario por ID
-        Args:
-            user_id (int): ID del usuario
-        Returns:
-            User: Objeto de usuario
-        """
         return User.query.get(user_id)
 
     # Blueprints register
