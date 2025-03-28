@@ -23,10 +23,7 @@ def create_app():
     
     # Set config variables
     app.config.from_object(Config)
-    app.config.update({
-        'MAIL_USE_TLS': True,
-        'MAIL_USE_SSL': False,
-    })
+    
 
     # Initialize components
     init_db(app)
