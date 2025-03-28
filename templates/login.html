@@ -1,0 +1,58 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <!-- Columna del formulario -->
+      <div class="column is-half">
+        <div class="box">
+          <figure class="has-text-centered" style="padding: 5%;">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" width="128">
+          </figure>
+          <h2 class="title is-3 has-text-centered">Iniciar sesión</h2>
+          <form method="POST" action="{{ url_for('auth.login') }}">
+            {{ form.hidden_tag() }}
+
+            <!-- Campo de email -->
+            <div class="field">
+              {{ form.email.label(class="label") }}
+              <div class="control has-icons-left">
+                {{ form.email(class="input", placeholder="Ingrese su dirección de correo electrónico") }}
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Campo de contraseña -->
+            <div class="field">
+              {{ form.password.label(class="label") }}
+              <div class="control has-icons-left">
+                {{ form.password(class="input", placeholder="Ingrese su contraseña") }}
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="field">
+              <div class="control">
+                {{ form.submit(class="button is-primary is-fullwidth") }}
+              </div>
+            </div>
+          </form>
+          <br>
+          <!-- Opciones adicionales -->
+          <div class="content is-small has-text-centered">
+            <a href="{{ url_for('auth.forgot_password') }}">¿Olvidó su contraseña?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

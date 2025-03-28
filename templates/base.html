@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>{% block title %}{{ app_name }}{% endblock %}</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/samancustom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-96x96.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const themeSelector = document.getElementById('theme-selector');
+            if (themeSelector) {
+                themeSelector.addEventListener('change', function () {
+                    const selectedTheme = this.value;
+                    document.documentElement.setAttribute('data-theme', selectedTheme);
+                    document.documentElement.className = 'theme-' + selectedTheme;
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- Navbar section -->
+    {% include 'partials/_navbar.html' %}
+
+    <!-- Flash messages section -->
+    {% include 'partials/_flash_messages.html' %}
+
+    <!-- Middle Section -->
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <!-- Sidebar Section -->
+                {% include 'partials/_sidebar.html' %}
+
+                <!-- Content Section -->
+                <div class="column is-three-quarters">
+                    {% block content %}  
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- Footer Section -->
+    {% include 'partials/_footer.html' %}
+</body>
+</html>
