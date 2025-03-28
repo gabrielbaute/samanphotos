@@ -1,8 +1,9 @@
 """Rutas públicas de la aplicación."""
 
-from flask import Blueprint, render_template, current_app
-from flask_mail import Message, Mail
-from mail.config_mail import mail
+from flask import Blueprint, render_template, current_app, url_for, redirect
+from flask_login import current_user
+#from flask_mail import Message, Mail
+#from mail.config_mail import mail
 
 public = Blueprint("public", __name__)
 
@@ -10,9 +11,12 @@ public = Blueprint("public", __name__)
 @public.route("/")
 def index():
     """Ruta principal de la aplicación."""
-    return render_template("index.html")
+    if current_user.is_authenticated:
+        return redirect(url_for("photos.profile"))
+    else:
+        return render_template("index.html")
 
-
+"""
 @public.route('/test-mail')
 def test_mail():
     try:
@@ -33,4 +37,5 @@ def test_mail():
         return "¡Email enviado correctamente!"
     except Exception as e:
         current_app.logger.error(f"Fallo definitivo: {str(e)}", exc_info=True)
-        return f"Error: {str(e)}", 500
+        return f"Error: {str(e)}", 500"
+"""
