@@ -1,0 +1,17 @@
+{% extends 'mail/base.html' %}
+
+{% block title %}New Login Detected{% endblock %}
+
+{% block header %}New Login to Your Account{% endblock %}
+
+{% block content %}
+<p>Hi {{ username }},</p>
+<p>A new login to your account has been detected:</p>
+<ul>
+  <li><strong>IP Address:</strong> {{ ip_address }}</li>
+  <li><strong>Device:</strong> {{ device }}</li>
+  <li><strong>Browser:</strong> {{ browser }}</li>
+</ul>
+<p>If this was you, no further action is required. If you did not log in, please reset your password immediately.</p>
+<p>The {{ app_name }} Security Team</p>
+{% endblock %}

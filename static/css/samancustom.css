@@ -1,0 +1,24 @@
+.navbar {
+    padding: 1rem;
+}
+
+.sidebar {
+    width: 200px;
+    padding: 20px;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 6%;
+}
+
+.layout { 
+    display: flex;
+}
+
+.main-container {
+    min-height: calc(100vh - 100px); /* Asegura que el contenido llene la pantalla */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }

@@ -18,13 +18,12 @@ from flask import (
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
-from app.models import db, User, Photo, Album
+from database.db_config import db
+from database.models import User, AuditLog, SessionHistory, Photo, Album, FaceEncoding
 from app.forms import UploadPhotoForm, CreateAlbumForm
-from core.metadata import extract_metadata
+from core import extract_metadata, process_photo, comparefaces
 import logging
 import random
-
-logger = logging.getLogger(__name__)
 
 photos = Blueprint("photos", __name__)
 
@@ -117,6 +116,20 @@ def profile():
         "profile.html", upload_form=upload_form, album_form=album_form, albums=albums
     )
 
+@photos.route("/profile-security", methods=["GET", "POST"])
+@login_required
+def profile_security():
+    # Cargar historial de sesiones y auditoría para las pestañas
+    session_history = current_user.session_history  # Obtén desde el modelo User
+    audit_logs = current_user.audit_logs  # Obtén desde el modelo User
+
+    return render_template(
+        'security.html',
+        user=current_user,
+        session_history=session_history,
+        audit_logs=audit_logs
+    )
+
 
 @photos.route("/timeline")
 @login_required
@@ -141,7 +154,7 @@ def upload_photo():
     if "photos" not in request.files:
         flash("No se ha seleccionado ninguna foto.")
         return redirect(url_for("photos.profile"))
-    logger.warning(f"Form data: {form.data}")
+    #logger.warning(f"Form data: {form.data}")
     files = request.files.getlist(form.photos.name)
     for file in files:
         filename = secure_filename(file.filename)
@@ -150,7 +163,7 @@ def upload_photo():
         filepath = os.path.join(current_user.storage_path, unique_filename)
         file.save(filepath)
         metadata = extract_metadata(filepath)
-        print(form.album.data)
+        #print(form.album.data)
         new_photo = Photo(
             filename=unique_filename,
             original_filename=original_filename,
@@ -182,7 +195,7 @@ def view_photo(photo_id):
     photo = Photo.query.get_or_404(photo_id)
     if photo.user_id != current_user.id:
         flash("No tienes permiso para ver esta foto.")
-        return redirect(url_for("main.timeline_photos"))
+        return redirect(url_for("photos.timeline_photos"))
     # Método para borrar foto
     if request.method == "POST":
         db.session.delete(photo)
@@ -227,7 +240,7 @@ def download_photo(photo_id):
     photo = Photo.query.get_or_404(photo_id)
     if photo.user_id != current_user.id:
         flash("No tienes permiso para descargar esta foto.")
-        return redirect(url_for("main.timeline_photos"))
+        return redirect(url_for("photos.timeline_photos"))
     try:
         return send_file(
             photo.path, as_attachment=True, download_name=photo.original_filename
@@ -302,3 +315,59 @@ def download_album(album_id):
     temp_file.close()
     
     return send_file(temp_file.name, as_attachment=True, download_name=f'{album.name}.zip')
+
+# Ruta para face recognition
+@photos.route("/people", methods=["GET"])
+@login_required
+def people():
+    # Obtener todos los rostros del usuario actual
+    user_photo_ids=[photo.id for photo in Photo.query.filter_by(user_id=current_user.id).all()]
+
+    # Obtener todas las codificaciones faciales asociadas a las fotos del usuario
+    face_encodings= FaceEncoding.query.filter(FaceEncoding.photo_id.in_(user_photo_ids)).all()
+
+    # Agrupar rostros por nombre (o id si no tiene nombre)
+    people={}
+    for face in face_encodings:
+        name=face.name if face.name else f"Person {face.id}"
+        if name not in people:
+            people[name]=[]
+        people[name].append((Photo.query.get(face.photo_id), face))
+    
+    return render_template("people.html", people=people)
+
+# Ruta para filtrar por rostros
+
+@photos.route('/people/<int:person_id>', methods=['GET'])
+@login_required
+def person_photos(person_id):
+    # Obtener la codificación facial específica
+    target_face = FaceEncoding.query.get(person_id)
+    print(f"Rostro objetivo: {target_face}")
+
+    if not target_face:
+        flash("Rostro no encontrado", "error")
+        return redirect(url_for('photos.people'))
+
+    # Utilizar el método comparefaces para encontrar todas las coincidencias
+    matches = comparefaces(target_face.encoding)
+    print(f"Coincidencias encontradas: {matches}")
+
+    # Obtener las fotos asociadas a las codificaciones faciales coincidentes
+    photo_ids = [face.photo_id for face in matches]
+    print(f"IDs de fotos encontradas: {photo_ids}")
+    photos = Photo.query.filter(Photo.id.in_(photo_ids)).all()
+    print(f"Fotos encontradas: {photos}")
+
+    return render_template('person_photos.html', photos=photos, person_id=person_id)
+
+
+# Ruta para escaneo masivo
+@photos.route("/scan_faces", methods=["POST"])
+@login_required
+def scan_faces():
+    user_photos=Photo.query.filter_by(user_id=current_user.id).all()
+    for photo in user_photos:
+        process_photo(photo)
+    flash("Face scan completed successfully!", "success")
+    return redirect(url_for("photos.people"))

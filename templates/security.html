@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h1 class="title">Información de seguridad del usuario</h1>
+    <div class="columns">
+      <!-- Columna 1: Foto y datos personales -->
+      
+      
+        <!-- Columna 2: Tabs para Historial y Auditoría -->
+      <div class="column">
+        <div class="tabs">
+          <ul>
+            <li class="is-active" id="tab-profile-data"><a href="#profile">Perfil</a></li>
+            <li><a href="#sessions" id="tab-history-session">Historial de sesiones</a></li>
+            <li><a href="#audit" id="tab-audit-log">Registro de cuenta</a></li>
+          </ul>
+        </div>
+
+        <div id="profile">
+          <h2 class="title is-4">Detalles</h2>
+          <p>Here you can edit your personal details by clicking on "Edit Profile".</p>
+        </div>
+
+        <div id="sessions" class="is-hidden">
+          <h2 class="title is-4">Historial de sesiones</h2>
+          <p>Aquí encontrarás un historial detallado de tus inicios de sesión. Si no reconoces alguna de las acciones reflejadas aquí, por favor ponte en contacto con el equipo de soporte de {{ app_name }}.</p>
+          <br>
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Dirección IP</th>
+                <th>Dispositivo</th>
+                <th>Navegador</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for session in session_history %}
+              <tr>
+                <td>{{ session.fecha_evento }}</td>
+                <td>{{ session.ip_origen }}</td>
+                <td>{{ session.dispositivo or "Unknown" }}</td>
+                <td>{{ session.navegador or "Unknown" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div id="audit" class="is-hidden">
+          <h2 class="title is-4">Registro de actividad de tu cuenta</h2>
+          <p>Aquí encontrarás un historial de los cambios críticos en tu cuenta y otras acciones que hayas emprendido. Si no reconoces alguna de las acciones reflejadas aquí, por favor ponte en contacto con el equipo de soporte de {{ app_name }}.</p>
+          <br>
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Acción</th>
+                <th>Detalles</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for log in audit_logs %}
+              <tr>
+                <td>{{ log.fecha_cambio }}</td>
+                <td>{{ log.accion }}</td>
+                <td>{{ log.detalles }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% from "partials/_macros.html" import tabs_security_page %}
+{{ tabs_security_page() }}
+
+{% endblock %}

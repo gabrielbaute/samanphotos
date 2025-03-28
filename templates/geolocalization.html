@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Geolocalización de Fotos{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">Geolocalización de Fotos</h1>
+
+        <!-- Contenedor para el Mapa -->
+        <div id="map" data-photos='{{ photos|tojson }}' style="height: 500px; width: 100%; margin-bottom: 20px;"></div>
+
+        <!-- Incluir la macro OneStreetMap -->
+        {% from "partials/_macros.html" import onse_street_map %}
+        {{ onse_street_map() }}   
+    </div>
+</section>
+{% endblock %}

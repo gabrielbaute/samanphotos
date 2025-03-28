@@ -1,6 +1,11 @@
-from flask import Blueprint
+import os
+from flask import Blueprint, request
 from flask_restful import Api, reqparse, Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from werkzeug.utils import secure_filename
+from core.facerecognition import process_photo
+from database.models import Photo
+from database.db_config import db
 
 
 api_bp= Blueprint("api", __name__)
@@ -90,6 +95,25 @@ class PhotoList(Resource):
     def post(self):
         args=parser.parse_args()
         photo_id=int(max(photos.keys() or [0])) + 1
+        file=request.files["file"]
+        filename=secure_filename(file.filename)
+        filepath=os.path.join("uploads", filename)
+        file.save(filepath)
+
+        photo= Photo(
+            id=photo_id,
+            filename=filename,
+            original_filename=filename,
+            path=filepath,
+            user_id=args["user_id"],
+            album_id=args["album_id"]
+        )
+        db.session.add(photo)
+        db.session.commit()
+
+        # Procesar la foto para detectar rostros
+        process_photo(photo)
+
         photos[photo_id]={
             "filename": args["filename"],
             "album_id": args["album_id"]
