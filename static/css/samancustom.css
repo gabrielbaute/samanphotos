@@ -22,3 +22,21 @@
     flex-direction: column;
     justify-content: flex-start;
   }
+
+code {
+    display: block; /* Hace que el código se comporte como un bloque (parecido a <pre>) */
+    padding: 10px; /* Espaciado interno para mayor claridad */
+    margin: 0; /* Elimina márgenes por defecto */
+    line-height: 1.2; /* Espaciado entre líneas */
+    font-size: 14px; /* Ajusta el tamaño del texto */
+    overflow-x: auto; /* Agrega scroll horizontal si el texto es muy largo */
+    background-color: #f5f5f5; /* Fondo claro similar a Bulma */
+    border: 1px solid #ccc; /* Borde para resaltar el bloque de código */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.log-line {
+    display: block; /* Asegura que cada línea sea un bloque independiente */
+    margin: 0; /* Reduce el espacio entre líneas */
+    padding: 0; /* Elimina padding innecesario */
+}
