@@ -1,12 +1,15 @@
 from flask_mail import Message
 from flask import render_template, current_app
 from datetime import datetime, timedelta
-import logging, random
+import random
 
 from mail.config_mail import mail
 from mail.tokens_mail_generator import create_email_token, create_reset_token
 from database.models import VerificationCode
 from database import db
+from config import Config
+
+appname = Config.APP_NAME
 
 def send_confirmation_email(user):
     """
@@ -14,7 +17,7 @@ def send_confirmation_email(user):
     """
     try:
         token = create_email_token(user.id)
-        msg = Message('Confirm Your Email', recipients=[user.email])
+        msg = Message(f'{[appname]}: Confirm Your Email', recipients=[user.email])
         msg.html = render_template('mail/confirm_email.html', username=user.username, token=token)
         mail.send(msg)
         
@@ -30,7 +33,7 @@ def send_reset_password_email(user):
     try:
 
         token = create_reset_token(user.id)
-        msg = Message('Reset Your Password', recipients=[user.email])
+        msg = Message(f'{[appname]}: Reset Your Password', recipients=[user.email])
         msg.html = render_template('mail/reset_password.html', username=user.username, token=token)
         mail.send(msg)
         
@@ -44,7 +47,7 @@ def send_account_locked_email(user):
     Envía un correo al usuario cuando su cuenta ha sido bloqueada.
     """
     try:
-        msg = Message('Your Account Has Been Locked', recipients=[user.email])
+        msg = Message(f'{[appname]}: Your Account Has Been Locked', recipients=[user.email])
         msg.html = render_template('mail/account_locked_email.html', username=user.username)
         mail.send(msg)
 
@@ -71,7 +74,7 @@ def send_verification_code(user):
         db.session.commit()
 
         # Renderizar el correo con la plantilla
-        msg = Message("Your Verification Code", recipients=[user.email])
+        msg = Message(f"{[appname]}: Your Verification Code", recipients=[user.email])
         msg.html = render_template(
             'mail/verification_code_email.html',
             username=user.username,

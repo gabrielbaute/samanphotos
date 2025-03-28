@@ -3,6 +3,9 @@ from flask_mail import Message
 from database.models import User
 from mail.config_mail import mail
 from flask import request, render_template
+from config import Config
+
+appname = Config.APP_NAME
 
 def send_login_notification(user, ip_address):
     try:
@@ -13,7 +16,7 @@ def send_login_notification(user, ip_address):
         browser = request.user_agent.browser
 
         # Renderizar la plantilla con los datos
-        msg = Message('New Login Notification', recipients=[user.email])
+        msg = Message(f'{[appname]}: New Login Notification', recipients=[user.email])
         msg.html = render_template(
             'mail/login_notification.html',
             username=user.username,
@@ -39,7 +42,7 @@ def send_enable_2fa_notification(user):
 
         # Configurar el mensaje
         msg = Message(
-            subject="Two-Factor Authentication Enabled",
+            subject=f"{[appname]}: Two-Factor Authentication Enabled",
             recipients=[user.email]
         )
         msg.html = render_template(
@@ -66,7 +69,7 @@ def send_disable_2fa_notification(user):
 
         # Configurar el mensaje
         msg = Message(
-            subject="Two-Factor Authentication Disabled",
+            subject=f"{[appname]}: Two-Factor Authentication Disabled",
             recipients=[user.email]
         )
         msg.html = render_template(
@@ -89,7 +92,7 @@ def send_welcome_email(user):
         """
         # Configurar el mensaje
         msg = Message(
-            subject="Welcome to [YourAppName]!",
+            subject=f"Welcome to {appname}!",
             recipients=[user.email]
         )
         msg.html = render_template(
@@ -110,7 +113,7 @@ def send_account_activation_email(user):
         """
         # Configurar el mensaje
         msg = Message(
-            subject="Your account has been activated!",
+            subject=f"{[appname]}: Your account has been activated!",
             recipients=[user.email]
         )
         msg.html = render_template(
@@ -133,7 +136,7 @@ def send_password_change_notification(user, ip_address):
         browser = request.user_agent.browser
 
         # Renderizar la plantilla con los datos
-        msg = Message('Your password has been changed', recipients=[user.email])
+        msg = Message(f'{[appname]}: Your password has been changed', recipients=[user.email])
         msg.html = render_template(
             'mail/password_changed_notification.html',
             username=user.username,
