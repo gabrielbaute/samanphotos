@@ -5,7 +5,8 @@
 {% block content %}
 <div class="container">
     <h1 class="title">Mis Álbumes</h1>
-    <div class="columns is-multiline">
+    <section class="section">
+        <div class="columns is-multiline">
         {% for album in albums %}
         <div class="column is-one-quarter">
             <a href="{{ url_for('photos.view_album', album_id=album.id) }}">
@@ -25,6 +26,7 @@
             </a>
         </div>
         {% endfor %}
-    </div>
+        </div>
+    </section>
 </div>
 {% endblock %}

@@ -13,8 +13,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
     
     <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -37,16 +41,20 @@
     {% include 'partials/_flash_messages.html' %}
 
     <!-- Middle Section -->
-    <div class="columns">
-        <!-- Sidebar Section -->
-        {% include 'partials/_sidebar.html' %}
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <!-- Sidebar Section -->
+                {% include 'partials/_sidebar.html' %}
 
-        <!-- Content Section -->
-        <div class="column is-three-quarters">
-            {% block content %}  
-            {% endblock %}
+                <!-- Content Section -->
+                <div class="column is-three-quarters">
+                    {% block content %}  
+                    {% endblock %}
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
     <!-- Scripts -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
