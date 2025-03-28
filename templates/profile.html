@@ -70,6 +70,10 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <!-- Include the macro for handling tabs -->
+    {% from "partials/_macros.html" import tabs_profile_page %}
+    {{ tabs_profile_page() }}
+
 {% endblock %}

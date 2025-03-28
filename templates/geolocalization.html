@@ -9,6 +9,10 @@
 
         <!-- Contenedor para el Mapa -->
         <div id="map" data-photos='{{ photos|tojson }}' style="height: 500px; width: 100%; margin-bottom: 20px;"></div>
+
+        <!-- Incluir la macro OneStreetMap -->
+        {% from "partials/_macros.html" import onse_street_map %}
+        {{ onse_street_map() }}   
     </div>
 </section>
 {% endblock %}

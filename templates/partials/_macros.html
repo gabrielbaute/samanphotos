@@ -1,0 +1,119 @@
+{% macro onse_street_map() %}
+<script>
+    // Script para OpenStreetMap
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('map')) {
+            console.log('Map element found, initializing map...');
+            initMap();
+        } else {
+            console.log('Map element not found');
+        }
+    });
+    function initMap() {
+        console.log('Initializing map...');
+        var map = L.map('map').setView([0, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var markers = [];
+
+        var photosElement = document.getElementById('map');
+        if (photosElement) {
+            var photos = JSON.parse(photosElement.dataset.photos);
+            photos.forEach(function(photo) {
+                var lat = parseFloat(photo.gps_latitude);
+                var lng = parseFloat(photo.gps_longitude);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    console.log(`Adding marker for photo at (${lat}, ${lng})`);
+                    var marker = L.marker([lat, lng]).addTo(map)
+                        .bindPopup("<b>" + photo.original_filename + "</b><br>" + photo.date_taken);
+                    markers.push(marker);
+                }
+            });
+        } else {
+            console.log('Photos element not found');
+        }
+
+        if (markers.length > 0) {
+            var group = new L.featureGroup(markers);
+            map.fitBounds(group.getBounds());
+            console.log('Map bounds set to fit markers');
+        } else {
+            console.log('No markers to display');
+        }
+    }
+</script>
+{% endmacro %}
+
+{% macro tabs_profile_page() %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Manejo de pestañas en la página de perfil
+        if (document.getElementById('tab-upload') && document.getElementById('tab-album')) {
+            document.getElementById('tab-upload').addEventListener('click', function() {
+                document.getElementById('upload-section').style.display = 'block';
+                document.getElementById('album-section').style.display = 'none';
+                this.classList.add('is-active');
+                document.getElementById('tab-album').classList.remove('is-active');
+            });
+    
+            document.getElementById('tab-album').addEventListener('click', function() {
+                document.getElementById('upload-section').style.display = 'none';
+                document.getElementById('album-section').style.display = 'block';
+                this.classList.add('is-active');
+                document.getElementById('tab-upload').classList.remove('is-active');
+            });
+        }
+    });
+</script>
+{% endmacro %}
+
+{% macro tabs_security_page() %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos de los tabs
+    const tabProfile = document.getElementById('tab-profile-data');
+    const tabHistory = document.getElementById('tab-history-session');
+    const tabAudit = document.getElementById('tab-audit-log');
+    
+    // Secciones de contenido
+    const sectionProfile = document.getElementById('profile');
+    const sectionHistory = document.getElementById('sessions');
+    const sectionAudit = document.getElementById('audit');
+
+    // Manejo de clicks en los tabs
+    if (tabProfile && tabHistory && tabAudit) {
+        tabProfile.addEventListener('click', function(e) {
+            e.preventDefault();
+            setActiveTab(this, [tabHistory, tabAudit]);
+            showSection(sectionProfile, [sectionHistory, sectionAudit]);
+        });
+
+        tabHistory.addEventListener('click', function(e) {
+            e.preventDefault();
+            setActiveTab(this, [tabProfile, tabAudit]);
+            showSection(sectionHistory, [sectionProfile, sectionAudit]);
+        });
+
+        tabAudit.addEventListener('click', function(e) {
+            e.preventDefault();
+            setActiveTab(this, [tabProfile, tabHistory]);
+            showSection(sectionAudit, [sectionProfile, sectionHistory]);
+        });
+    }
+
+    // Funciones auxiliares
+    function setActiveTab(activeTab, inactiveTabs) {
+        activeTab.classList.add('is-active');
+        inactiveTabs.forEach(tab => tab.classList.remove('is-active'));
+    }
+
+    function showSection(activeSection, inactiveSections) {
+        activeSection.classList.remove('is-hidden');
+        inactiveSections.forEach(section => section.classList.add('is-hidden'));
+    }
+});
+</script>
+{% endmacro %}
