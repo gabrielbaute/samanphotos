@@ -4,11 +4,22 @@ FROM python:3.13-slim
 # Evitar consultas interactivas durante la instalación de paquetes
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Instalar herramientas de compilación necesarias
+RUN apt-get update && apt-get install -y \
+    cmake \
+    g++ \
+    make \
+    libx11-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
 # Copiar los archivos de requisitos e instalar las dependencias
 COPY requirements.txt requirements.txt
+RUN pip install --upgrade pip setuptools wheel
+
+# Instalar las dependencias necesarias
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar el resto de los archivos de la aplicación
