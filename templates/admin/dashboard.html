@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+    <div class="tabs">
+        <ul>
+            <li><a href="{{ url_for('admin.admin_logs') }}">Logs</a></li>
+            <li><a href="{{ url_for('admin.admin_stats') }}">Estadísticas</a></li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        <p>Selecciona una pestaña para visualizar los datos.</p>
+    </div>
+</section>
+{% endblock %}

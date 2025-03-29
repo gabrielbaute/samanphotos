@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro de Cuenta - {{ user.username }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <!-- Navigation Tabs -->
+    {% include 'partials/_profile_navtab.html' %}
+    
+    <div class="container">
+        <h1 class="title">Registro de Actividad</h1>
+        <p>Si no reconoces alguna de las acciones reflejadas aquí, por favor contacta al equipo de soporte de {{ app_name }}.</p>
+        <br>
+        <table class="table is-fullwidth">
+        <thead>
+            <tr>
+            <th>Fecha</th>
+            <th>Acción</th>
+            <th>Detalles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in audit_logs %}
+            <tr>
+            <td>{{ log.fecha_cambio }}</td>
+            <td>{{ log.accion }}</td>
+            <td>{{ log.detalles }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

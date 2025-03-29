@@ -1,0 +1,22 @@
+{% extends 'admin/dashboard.html' %}
+{% block content %}
+<section class="section">
+    <div class="tabs">
+        <ul>
+            <li><a href="{{ url_for('admin.admin_logs') }}">Logs</a></li>
+            <li><a href="{{ url_for('admin.admin_stats') }}">Estadísticas</a></li>
+        </ul>
+    </div>
+    <h2 class="title is-4">Logs</h2>
+    {% for log_name, log_content in logs.items() %}
+        <h3>{{ log_name }}</h3>
+        <div class="content">
+                <code>
+                    {% for line in log_content %}
+                    <span class="log-line">{{ line }}</span><br>
+                    {% endfor %}
+                </code>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}

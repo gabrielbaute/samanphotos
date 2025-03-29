@@ -2,13 +2,13 @@
 
 import uuid, json
 
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, session
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database.db_config import db
-from database.models import User, PasswordHistory
-from app.forms import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
+from database.models import User
+from app.forms import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm, ResendConfirmationForm
 from core import create_user_storage
 from utils import register_session_event, registrar_auditoria, register_password_history_event, ACCIONES
 from mail import(
@@ -51,7 +51,7 @@ def login():
                 flash("Usuario o contraseña inválidos")
         except Exception as e:
             current_app.logger.error(f"Error al intentar autenticar: {e}")
-    return render_template("login.html", form=form)
+    return render_template("auth/login.html", form=form)
 
 
 @auth.route("/logout")
@@ -91,7 +91,7 @@ def register():
         # Iniciar sesión del nuevo usuario
         
         return redirect(url_for("public.index"))
-    return render_template("register.html", form=form)
+    return render_template("auth/register.html", form=form)
 
 @auth.route('/confirm/<token>')
 def confirm_email(token):
@@ -129,6 +129,23 @@ def confirm_email(token):
     flash('Your account has been confirmed. You can now log in.', 'success')
     return redirect(url_for('auth.login'))
 
+@auth.route('/resend_confirmation', methods=['GET', 'POST'])
+def resend_confirmation():
+    form = ResendConfirmationForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        user = User.query.filter_by(email=email).first()
+
+        if user and not user.is_active:
+            send_confirmation_email(user)
+            flash('Se ha enviado un nuevo mensaje de confirmación a su dirección de correo electrónico.', 'success')
+        else:
+            flash('Correo electrónico no válido o la cuenta ya está activa.', 'danger')
+
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/resend_confirmation.html', form=form)
+
 @auth.route("/forgot_password", methods=["GET", "POST"])
 def forgot_password():
     """Ruta de restablecimiento de contraseña"""
@@ -143,7 +160,7 @@ def forgot_password():
             return redirect(url_for("auth.login"))
         else:
             flash("No se encontró ninguna cuenta con ese correo electrónico.")
-    return render_template("forgot_password.html", form=form)
+    return render_template("auth/forgot_password.html", form=form)
 
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -181,4 +198,4 @@ def reset_password(token):
 
         return redirect(url_for('auth.login'))
 
-    return render_template('reset_password.html', form=form)
+    return render_template('auth/reset_password.html', form=form)

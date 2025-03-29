@@ -1,0 +1,33 @@
+{% extends 'base_public.html' %}
+
+{% block title %}Reenviar email de confirmación{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <div class="box">
+          
+          <h2 class="title is-2">Reenviar email de confirmación</h2>
+          <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="field">
+              {{ form.email.label(class="label") }}
+              <div class="control">
+                {{ form.email(class="input") }}
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                {{ form.submit(class="button is-primary") }}
+              </div>
+            </div>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

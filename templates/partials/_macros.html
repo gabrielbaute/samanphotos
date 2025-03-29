@@ -117,3 +117,28 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% endmacro %}
+
+{% macro tabs_admin_page() %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.tabs ul li');
+        const sections = {
+            'tab-logs': 'logs-section',
+            'tab-stats': 'stats-section'
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Cambiar la pestaña activa
+                tabs.forEach(t => t.classList.remove('is-active'));
+                this.classList.add('is-active');
+
+                // Mostrar la sección correspondiente
+                Object.keys(sections).forEach(section => {
+                    document.getElementById(sections[section]).style.display = section === this.id ? 'block' : 'none';
+                });
+            });
+        });
+    });
+</script>
+{% endmacro %}

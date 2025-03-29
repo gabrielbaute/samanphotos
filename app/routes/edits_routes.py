@@ -32,7 +32,7 @@ def edit_album(album_id):
             return redirect(url_for("photos.view_albums"))
         else:
             flash("El nombre del álbum no puede estar vacío.")
-    return render_template("edit_album.html", album=album)
+    return render_template("edit/edit_album.html", album=album)
 
 
 # Ruta para Editar el Perfil
@@ -61,7 +61,7 @@ def edit_profile():
 
     # Preparar los datos de seguridad
 
-    return render_template("edit_profile.html", form=form)
+    return render_template("edit/edit_profile.html", form=form)
 
 
 @edits.route("/delete_photo/<int:photo_id>", methods=["POST"])
