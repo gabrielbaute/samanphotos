@@ -7,9 +7,23 @@
     <!-- Navigation Tabs -->
     {% include 'partials/_profile_navtab.html' %}
 
-    <div class="container">
-        <h1 class="title">Perfil</h1>
-        <p>Aquí puedes editar tus datos personales haciendo clic en "Edit Profile".</p>
-    </div>
+    <h4 class="title is-4">Tus estadísticas</h4>
+    <!-- Tabla de información crítica -->    
+    <table class="table is-fullwidth">
+    <thead>
+        <tr>
+        <th>Almacenamiento (MB)</th>
+        <th>Álbumes</th>
+        <th>Fotos Subidas</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>{{ informacion_usuario.storage_used_mb }} Mb</td>
+        <td>{{ informacion_usuario.albums_count }}</td>
+        <td>{{ informacion_usuario.fotos_count }}</td>
+        </tr>
+    </tbody>
+    </table>
 </section>
 {% endblock %}

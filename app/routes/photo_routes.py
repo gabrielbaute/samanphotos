@@ -21,6 +21,7 @@ from werkzeug.utils import secure_filename
 from database.db_config import db
 from database.models import User, Photo, Album, FaceEncoding
 from app.forms import UploadPhotoForm, CreateAlbumForm
+from utils import get_auditlog_user, get_sessions_user_history, get_user_data
 from core import extract_metadata, process_photo, comparefaces
 import random
 
@@ -310,24 +311,20 @@ def scan_faces():
 @photos.route('/profile')
 @login_required
 def profile():
-    return render_template('photos/profile.html', user=current_user)
+    informacion_usuario = get_user_data(current_user)
+    return render_template('photos/profile.html', user=current_user, informacion_usuario=informacion_usuario)
 
 @photos.route('/sessions')
 @login_required
 def sessions():
     # Pasa el historial de sesiones
-    session_history = [
-        # Ejemplo de datos. Obtén esto de tu base de datos
-        {"fecha_evento": "2025-03-28", "ip_origen": "192.168.1.1", "dispositivo": "PC", "navegador": "Chrome"}
-    ]
+    session_history = get_sessions_user_history(current_user.id)
+
     return render_template('photos/sessions.html', user=current_user, session_history=session_history)
 
 @photos.route('/audit')
 @login_required
 def audit():
     # Pasa los registros de auditoría
-    audit_logs = [
-        # Ejemplo de datos. Obtén esto de tu base de datos
-        {"fecha_cambio": "2025-03-27", "accion": "Cambio de contraseña", "detalles": "Contraseña actualizada correctamente"}
-    ]
+    audit_logs = get_auditlog_user(current_user.id)
     return render_template('photos/audit.html', user=current_user, audit_logs=audit_logs)
