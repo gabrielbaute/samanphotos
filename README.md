@@ -1,4 +1,10 @@
 # 🐍 **SamanPhotos** 📸
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.13-blue.svg)
+![Flask](https://img.shields.io/badge/Framework-Flask-green.svg)
+![Docker](https://img.shields.io/badge/Container-Docker-blue.svg)
+![Bulma](https://img.shields.io/badge/CSS%20Framework-Bulma-00D1B2.svg)
+![Status](https://img.shields.io/badge/Status-En%20desarrollo-yellow.svg)
 
 ¡Bienvenidos! SamanPhotos es un proyecto personal desarrollado para aprender y mejorar mis habilidades en Python y en el desarrollo de aplicaciones web. La aplicación permite a los usuarios subir, gestionar y visualizar fotos, además de proporcionar varias características adicionales como la geolocalización de las fotos y la descarga de imágenes. Ya iremos agregando más cosas en el futuro. La estética y apariencia es en base a [Bulma-CSS](https://bulma.io/)
 
@@ -103,7 +109,7 @@ Asegúrate de tener instalado lo siguiente:
 Primero, descarga el código fuente desde el repositorio:
 
 ```bash
-git clone https://github.com/usuario/samanphotos.git
+git clone https://github.com/gabrielbaute/samanphotos
 cd samanphotos
 ```
 
